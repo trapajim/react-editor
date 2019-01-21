@@ -9,10 +9,12 @@ const Editable = WrappedComponent => {
       editor: PropTypes.bool,
     };
 
+    static defaultProps = { defaultValue: '' };
+
     constructor(props) {
       super(props);
       const { defaultValue } = this.props;
-      this.state = { value: defaultValue };
+      this.state = { val: defaultValue };
 
       this.onChange = this.onChange.bind(this);
     }
@@ -27,9 +29,9 @@ const Editable = WrappedComponent => {
     onChange(event) {
       const newText = event.target.value;
       const { updateCurChar } = this.props;
-      const { value } = this.state;
-      updateCurChar(newText.length - value.length);
-      this.setState({ value: newText });
+      const { val } = this.state;
+      updateCurChar(newText.length - val.length);
+      this.setState({ val: newText });
     }
 
     render() {

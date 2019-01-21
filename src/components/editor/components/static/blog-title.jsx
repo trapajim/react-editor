@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
 import Editable from './editable';
 
 const BlogTitle = props => {
   const { editor, val, handleChange } = props;
   if (editor) {
     return (
-      <input
+      <TextField
         type="text"
-        className="col-sm-12 form-group form-control"
         placeholder="Title"
-        id="title"
+        label="Title"
+        margin="dense"
+        fullWidth
+        variant="outlined"
         value={val}
         onChange={handleChange}
       />

@@ -3,27 +3,30 @@ import React from 'react';
 export default class TitleImage extends React.Component {
   constructor(props) {
     super(props);
-    let img = '/assets/articles/default.jpg';
-    if (this.props.defaultValue != '') {
-      img = this.props.defaultValue;
+    let img = '';
+    const { defaultValue } = this.props;
+    if (defaultValue !== '') {
+      img = defaultValue;
     }
     this.state = {
       shouldShowSearchPopup: false,
-      file: '',
       imagePreviewUrl: img,
       error: '',
     };
   }
+
   componentWillReceiveProps(nextProps) {
-    if (this.props.defaultValue != nextProps.defaultValue) {
-      this.setState({ imagePreviewUrl: nextProps.defaultValue });
+    const { defaultValue } = this.props;
+    if (defaultValue != nextProps.defaultValue) {
+      this.setState({ imagePreviewUrl: defaultValue });
     }
   }
+
   handleImageChange(e) {
     e.preventDefault();
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
+    const reader = new FileReader();
+    const file = e.target.files[0];
     if (e.target.files[0].size / 1024 / 1024 > 2) {
       this.setState({ error: 'the images size must be smaller than 2MB' });
       return;
@@ -39,10 +42,10 @@ export default class TitleImage extends React.Component {
     };
     reader.readAsDataURL(file);
   }
+
   selectedImage(url) {
     getImageFormUrl(url, file => {
       this.setState({
-        file: file,
         error: '',
         imagePreviewUrl: url,
       });
@@ -50,12 +53,14 @@ export default class TitleImage extends React.Component {
       this.toggleSearchPopup();
     });
   }
+
   toggleSearchPopup() {
     this.setState({ shouldShowSearchPopup: !this.state.shouldShowSearchPopup });
   }
+
   renderModal() {
     if (!this.state.shouldShowSearchPopup) {
-      return;
+      return <div />;
     }
     return (
       <div
@@ -114,6 +119,7 @@ export default class TitleImage extends React.Component {
       </div>
     );
   }
+
   renderImageView() {
     if (
       this.props.checkIsMobile &&
@@ -153,6 +159,7 @@ export default class TitleImage extends React.Component {
     }
     return $imagePreview;
   }
+
   render() {
     return this.renderImageView();
   }

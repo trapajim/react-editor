@@ -9,7 +9,11 @@ class App extends Component {
   }
 
   render() {
-    return <Editor />;
+    return (
+      <div style={{ maxWidth: 700, width: '100%', margin: '0 auto' }}>
+        <Editor />
+      </div>
+    );
   }
 }
 

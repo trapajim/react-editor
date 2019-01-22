@@ -1,6 +1,47 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {
+  Button,
+  TextField,
+  Dialog,
+  Card,
+  CardMedia,
+  CardContent,
+  DialogContent,
+  DialogTitle,
+  Divider,
+} from '@material-ui/core/';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import ImageDownload from '../../../helper/download-images';
+import { EditorContext } from '../../editor-context';
 
-export default class TitleImage extends React.Component {
+const css = () => ({
+  card: {
+    display: 'flex',
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  content: {
+    flex: '1 0 auto',
+  },
+  cover: {
+    width: 151,
+    backgroundSize: 'contain',
+  },
+});
+class TitleImage extends React.Component {
+  static propTypes = {
+    defaultValue: PropTypes.string,
+    checkIsMobile: PropTypes.bool,
+    editor: PropTypes.bool,
+    maxImageSize: PropTypes.number,
+  };
+
+  static defaultProps = { maxImageSize: 2 };
+
   constructor(props) {
     super(props);
     let img = '';
@@ -13,154 +54,173 @@ export default class TitleImage extends React.Component {
       imagePreviewUrl: img,
       error: '',
     };
+
+    this.toggleSearchPopup = this.toggleSearchPopup.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     const { defaultValue } = this.props;
-    if (defaultValue != nextProps.defaultValue) {
+    if (defaultValue !== nextProps.defaultValue) {
       this.setState({ imagePreviewUrl: defaultValue });
     }
   }
 
-  handleImageChange(e) {
+  handleImageChange(e, updateComponents) {
     e.preventDefault();
-
+    const { maxImageSize } = this.props;
     const reader = new FileReader();
     const file = e.target.files[0];
-    if (e.target.files[0].size / 1024 / 1024 > 2) {
-      this.setState({ error: 'the images size must be smaller than 2MB' });
+    if (e.target.files[0].size / 1024 / 1024 > maxImageSize) {
+      this.setState({
+        error: 'the images size must be smaller than' + maxImageSize + ' mb',
+      });
       return;
     }
     reader.onloadend = () => {
       this.setState({
-        file: file,
         error: '',
         imagePreviewUrl: reader.result,
       });
-      this.props.changed('file', file);
+      updateComponents('file', file);
       this.toggleSearchPopup();
     };
     reader.readAsDataURL(file);
   }
 
-  selectedImage(url) {
-    getImageFormUrl(url, file => {
+  selectedImage(url, updateComponents) {
+    ImageDownload(url, file => {
       this.setState({
         error: '',
         imagePreviewUrl: url,
+        shouldShowSearchPopup: false,
       });
-      this.props.changed('file', file);
-      this.toggleSearchPopup();
+      updateComponents('file', file);
     });
   }
 
+  handleKeyPress(e, url, updateComponents) {
+    if (e.keyCode === 13) {
+      this.selectedImage(url, updateComponents);
+    }
+  }
+
   toggleSearchPopup() {
-    this.setState({ shouldShowSearchPopup: !this.state.shouldShowSearchPopup });
+    const { shouldShowSearchPopup } = this.state;
+    this.setState({ shouldShowSearchPopup: !shouldShowSearchPopup });
   }
 
   renderModal() {
-    if (!this.state.shouldShowSearchPopup) {
-      return <div />;
-    }
+    const { shouldShowSearchPopup } = this.state;
+
+    /*  */
     return (
-      <div
-        id="rel-article-modal"
-        className="modal fade in"
-        role="dialog"
-        style={{ display: 'block' }}
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                onClick={this.toggleSearchPopup.bind(this)}
-              >
-                &times;
-              </button>
-              <div id="custom-search-input" className="col-md-10">
-                <label className="file">
-                  <input
-                    type="file"
-                    onChange={e => this.handleImageChange(e)}
-                  />
-                  <span className="file-custom" />
-                </label>
-              </div>
-            </div>
-            <div className="modal-body">
-              {this.props.comp.map((c, i) => {
-                if (c.type == 'Images' && c.content != null) {
+      <EditorContext.Consumer>
+        {context => (
+          <Dialog
+            fullWidth={true}
+            maxWidth="md"
+            open={shouldShowSearchPopup}
+            onClose={this.toggleSearchPopup}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Upload Image</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="File upload"
+                onChange={e =>
+                  this.handleImageChange(e, context.updateComponents)
+                }
+                type="file"
+                fullWidth
+              />
+            </DialogContent>
+            <Divider variant="middle" />
+            <DialogTitle id="form-dialog-title">Select Image</DialogTitle>
+            <DialogContent>
+              {context.state.components.map((c, i) => {
+                if (c.type === 'Images' && c.content != null) {
                   return (
-                    <img
-                      style={{ width: '100px', marginRight: '10px' }}
-                      key={i}
-                      src={c.content.image}
-                      onClick={this.selectedImage.bind(this, c.content.image)}
-                    />
+                    <div
+                      key={c.content.image}
+                      tabIndex={i}
+                      role="button"
+                      onKeyPress={this.handleKeyPress.bind(
+                        this,
+                        c.content.image,
+                        context.updateComponents,
+                      )}
+                      onClick={this.selectedImage.bind(
+                        this,
+                        c.content.image,
+                        context.updateComponents,
+                      )}
+                    >
+                      <img
+                        style={{ width: '200px', marginRight: '10px' }}
+                        alt="props"
+                        src={c.content.image}
+                      />
+                    </div>
                   );
                 }
+                return null;
               })}
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-default"
-                data-dismiss="modal"
-                onClick={this.toggleSearchPopup.bind(this)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </EditorContext.Consumer>
     );
   }
 
   renderImageView() {
-    if (
-      this.props.checkIsMobile &&
-      !window.matchMedia('(max-width: 480px)').matches
-    ) {
+    const { checkIsMobile, editor, classes } = this.props;
+    if (checkIsMobile && !window.matchMedia('(max-width: 480px)').matches) {
       return <div />;
     }
-    let { imagePreviewUrl } = this.state;
-    let $imagePreview = null;
-    if (imagePreviewUrl) {
-      $imagePreview = <img src={imagePreviewUrl} className="title-image" />;
-    } else {
-      $imagePreview = (
-        <div className="previewText well">
-          Please select an Image for Preview
-        </div>
-      );
-    }
-    if (this.props.editor) {
+    const { imagePreviewUrl, error } = this.state;
+    if (editor) {
       return (
-        <div className="col-xs-12">
+        <div>
           {this.renderModal()}
-          <div className="row">
-            <p>{this.state.error}</p>
-            <div className="col-xs-12 col-sm-4">{$imagePreview}</div>
-            <div className="col-xs-12 col-sm-8">
-              <div
-                className="btn btn-default"
-                onClick={this.toggleSearchPopup.bind(this)}
-              >
-                Add title image
+          <Card className={classes.card}>
+            {imagePreviewUrl && (
+              <CardMedia
+                className={classes.cover}
+                image={imagePreviewUrl}
+                title="Live from space album cover"
+              />
+            )}
+            <div className={classes.details}>
+              <p>{error}</p>
+              <div>
+                <CardContent className={classes.content}>
+                  {!imagePreviewUrl && (
+                    <span>Please select a title image </span>
+                  )}
+                  <Button
+                    variant="outlined"
+                    color="default"
+                    onClick={this.toggleSearchPopup}
+                  >
+                    Upload
+                    <CloudUploadIcon />
+                  </Button>
+                </CardContent>
+                <div />
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       );
     }
-    return $imagePreview;
+    return <img src={imagePreviewUrl} className="title-image" alt="title" />;
   }
 
   render() {
     return this.renderImageView();
   }
 }
+export default withStyles(css, { withTheme: true })(TitleImage);

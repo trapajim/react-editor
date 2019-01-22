@@ -1,20 +1,37 @@
 import React, { Suspense } from 'react';
 import { EditorContext } from './editor-context';
-import { Excerpt, BlogTitle } from './components/static';
+import { Excerpt, BlogTitle, TitleImage } from './components/static';
 // const Test = React.lazy(() => import('./test.jsx'));
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { components: [] };
+    this.state = {
+      components: [
+        {
+          type: 'Images',
+          content: {
+            image: 'https://www.tsunagujapan.com/assets/logo.png',
+          },
+        },
+      ],
+    };
+    //
   }
 
   render() {
-    const { components } = this.state;
     return (
-      <EditorContext.Provider value={components}>
+      <EditorContext.Provider
+        value={{ state: this.state, updateComponents: () => {} }}
+      >
         <BlogTitle defaultValue="Title" editor updateCurChar={() => {}} />
         <Excerpt defaultValue="Hello" editor updateCurChar={() => {}} />
+        <TitleImage
+          defaultValue=""
+          editor
+          changed={() => {}}
+          updateCurChar={() => {}}
+        />
         <Suspense fallback={<div>Loading...</div>} />
       </EditorContext.Provider>
     );

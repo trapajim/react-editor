@@ -11,7 +11,8 @@ class Editor extends React.Component {
         {
           type: 'Images',
           content: {
-            image: 'https://www.tsunagujapan.com/assets/logo.png',
+            image:
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Tokyo_Tower_and_around_Skyscrapers.jpg/238px-Tokyo_Tower_and_around_Skyscrapers.jpg',
           },
         },
       ],

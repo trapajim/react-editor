@@ -9,7 +9,7 @@ const Excerpt = props => {
     return (
       <TextField
         type="text"
-        placeholder="Title"
+        placeholder="excerpt"
         id="outlined-multiline-flexible"
         label="excerpt"
         multiline

@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {
   EditorContext,
   EditorComponentContext,
@@ -6,6 +6,8 @@ import {
 } from './editor-context';
 import { Excerpt, BlogTitle, TitleImage } from './components/static';
 import EditorActions from './components/editor-actions';
+import Title from './components/title';
+
 // const Test = React.lazy(() => import('./test.jsx'));
 
 class Editor extends React.Component {
@@ -38,12 +40,12 @@ class Editor extends React.Component {
           changed={() => {}}
           updateCurChar={() => {}}
         />
-        <Suspense fallback={<div>Loading...</div>} />
         <EditorComponentContext.Provider
           value={{ components: DefaultComponents }}
         >
           <EditorActions show={true} />
         </EditorComponentContext.Provider>
+        <Title edit editor />
       </EditorContext.Provider>
     );
   }

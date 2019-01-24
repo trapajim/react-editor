@@ -38,6 +38,7 @@ class TitleImage extends React.Component {
     checkIsMobile: PropTypes.bool,
     editor: PropTypes.bool,
     maxImageSize: PropTypes.number,
+    classes: PropTypes.objectOf(PropTypes.shape),
   };
 
   static defaultProps = { maxImageSize: 2 };

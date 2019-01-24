@@ -1,6 +1,11 @@
 import React, { Suspense } from 'react';
-import { EditorContext } from './editor-context';
+import {
+  EditorContext,
+  EditorComponentContext,
+  DefaultComponents,
+} from './editor-context';
 import { Excerpt, BlogTitle, TitleImage } from './components/static';
+import EditorActions from './components/editor-actions';
 // const Test = React.lazy(() => import('./test.jsx'));
 
 class Editor extends React.Component {
@@ -34,6 +39,11 @@ class Editor extends React.Component {
           updateCurChar={() => {}}
         />
         <Suspense fallback={<div>Loading...</div>} />
+        <EditorComponentContext.Provider
+          value={{ components: DefaultComponents }}
+        >
+          <EditorActions show={true} />
+        </EditorComponentContext.Provider>
       </EditorContext.Provider>
     );
   }

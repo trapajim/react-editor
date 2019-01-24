@@ -39,10 +39,9 @@ class EditorActions extends React.Component {
     this.handleToggleShowMenu = this.handleToggleShowMenu.bind(this);
   }
 
-  handleToggleShowMenu(evt) {
+  handleToggleShowMenu() {
     const { showMenu } = this.state;
     const { show } = this.props;
-    console.log(evt.type);
     if (show) {
       return;
     }

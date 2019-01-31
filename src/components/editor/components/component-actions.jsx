@@ -12,7 +12,6 @@ const style = {
 const ComponentActions = WrappedComponent => {
   class HOC extends React.Component {
     static propTypes = {
-      editor: PropTypes.bool,
       edit: PropTypes.bool,
       position: PropTypes.number,
       updateEditState: PropTypes.func,
@@ -27,11 +26,8 @@ const ComponentActions = WrappedComponent => {
     }
 
     toggleEdit() {
-      const { editor, position, updateEditState } = this.props;
+      const { position, updateEditState } = this.props;
       const { edit } = this.state;
-      if (!editor) {
-        return;
-      }
       if (!edit) {
         updateEditState(
           {
@@ -44,8 +40,8 @@ const ComponentActions = WrappedComponent => {
     }
 
     render() {
-      const { classes } = this.props;
-      return (
+      const { classes, edit } = this.props;
+      return edit ? (
         <Paper elevation={10} className={classes.padding}>
           <WrappedComponent
             handleToggleEdit={this.toggleEdit}
@@ -53,6 +49,8 @@ const ComponentActions = WrappedComponent => {
             {...this.state}
           />
         </Paper>
+      ) : (
+        <div />
       );
     }
   }

@@ -12,6 +12,7 @@ const style = {
   padding: {
     padding: '8px',
   },
+  increasedWidth: {},
   flexCenter: {
     display: 'flex',
     alignItems: 'center',

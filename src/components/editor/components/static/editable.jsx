@@ -6,7 +6,6 @@ const Editable = WrappedComponent => {
     static propTypes = {
       defaultValue: PropTypes.string,
       updateCurChar: PropTypes.func,
-      editor: PropTypes.bool,
     };
 
     static defaultProps = { defaultValue: '' };

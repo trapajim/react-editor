@@ -16,37 +16,73 @@ class Editor extends React.Component {
     this.state = {
       components: [
         {
-          type: 'Images',
+          type: 'Title',
+          edit: true,
           content: {
-            image:
+            headingType: 'heading',
+            text: 'hello',
+          },
+        },
+        {
+          type: 'Title',
+          edit: false,
+          content: {
+            headingType: 'heading',
+            text:
               'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Tokyo_Tower_and_around_Skyscrapers.jpg/238px-Tokyo_Tower_and_around_Skyscrapers.jpg',
           },
         },
       ],
     };
     //
+    this.onComponentUpdate = this.onComponentUpdate.bind(this);
+  }
+
+  onComponentUpdate(content, position) {
+    const { components } = this.state;
+    components[position].content = content;
+    components[position].edit = false;
+    this.setState({ components });
+    if (components[position].type === 'Legacy') {
+      return;
+    }
+    localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
 
   render() {
+    const { components } = this.state;
     return (
-      <EditorContext.Provider
-        value={{ state: this.state, updateComponents: () => {} }}
-      >
-        <BlogTitle defaultValue="Title" editor updateCurChar={() => {}} />
-        <Excerpt defaultValue="Hello" editor updateCurChar={() => {}} />
-        <TitleImage
-          defaultValue=""
-          editor
-          changed={() => {}}
-          updateCurChar={() => {}}
-        />
-        <EditorComponentContext.Provider
-          value={{ components: DefaultComponents }}
+      <div>
+        <EditorContext.Provider
+          value={{
+            updateComponents: this.onComponentUpdate,
+          }}
         >
-          <EditorActions show={true} />
-        </EditorComponentContext.Provider>
-        <Title edit editor />
-      </EditorContext.Provider>
+          <BlogTitle defaultValue="Title" updateCurChar={() => {}} />
+          <Excerpt defaultValue="Hello" updateCurChar={() => {}} />
+          <TitleImage
+            components={components}
+            defaultValue=""
+            changed={() => {}}
+            updateCurChar={() => {}}
+          />
+          <EditorComponentContext.Provider
+            value={{ components: DefaultComponents }}
+          >
+            <EditorActions show={true} />
+          </EditorComponentContext.Provider>
+          <Title
+            edit={components[0].edit}
+            position={0}
+            content={components[0].content}
+          />
+          <Title
+            edit={components[1].edit}
+            position={1}
+            content={components[1].content}
+          />
+        </EditorContext.Provider>
+      </div>
     );
   }
 }

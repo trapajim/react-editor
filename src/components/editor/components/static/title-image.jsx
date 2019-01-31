@@ -34,9 +34,9 @@ const css = () => ({
 });
 class TitleImage extends React.Component {
   static propTypes = {
+    components: PropTypes.objectOf(PropTypes.object),
     defaultValue: PropTypes.string,
     checkIsMobile: PropTypes.bool,
-    editor: PropTypes.bool,
     maxImageSize: PropTypes.number,
     classes: PropTypes.objectOf(PropTypes.shape),
   };
@@ -112,7 +112,7 @@ class TitleImage extends React.Component {
 
   renderModal() {
     const { shouldShowSearchPopup } = this.state;
-
+    const { components } = this.props;
     /*  */
     return (
       <EditorContext.Consumer>
@@ -141,7 +141,7 @@ class TitleImage extends React.Component {
             <Divider variant="middle" />
             <DialogTitle id="form-dialog-title">Select Image</DialogTitle>
             <DialogContent>
-              {context.state.components.map((c, i) => {
+              {components.map((c, i) => {
                 if (c.type === 'Images' && c.content != null) {
                   return (
                     <div
@@ -177,47 +177,45 @@ class TitleImage extends React.Component {
   }
 
   renderImageView() {
-    const { checkIsMobile, editor, classes } = this.props;
+    const { checkIsMobile, classes } = this.props;
     if (checkIsMobile && !window.matchMedia('(max-width: 480px)').matches) {
       return <div />;
     }
     const { imagePreviewUrl, error } = this.state;
-    if (editor) {
-      return (
-        <div>
-          {this.renderModal()}
-          <Card className={classes.card}>
-            {imagePreviewUrl && (
-              <CardMedia
-                className={classes.cover}
-                image={imagePreviewUrl}
-                title="Live from space album cover"
-              />
-            )}
-            <div className={classes.details}>
-              <p>{error}</p>
-              <div>
-                <CardContent className={classes.content}>
-                  {!imagePreviewUrl && (
-                    <span>Please select a title image </span>
-                  )}
-                  <Button
-                    variant="outlined"
-                    color="default"
-                    onClick={this.toggleSearchPopup}
-                  >
-                    Upload
-                    <CloudUploadIcon />
-                  </Button>
-                </CardContent>
-                <div />
-              </div>
+
+    return (
+      <div>
+        {this.renderModal()}
+        <Card className={classes.card}>
+          {imagePreviewUrl && (
+            <CardMedia
+              className={classes.cover}
+              image={imagePreviewUrl}
+              title="Live from space album cover"
+            />
+          )}
+          <div className={classes.details}>
+            <p>{error}</p>
+            <div>
+              <CardContent className={classes.content}>
+                {!imagePreviewUrl && <span>Please select a title image </span>}
+                <Button
+                  variant="outlined"
+                  color="default"
+                  onClick={this.toggleSearchPopup}
+                >
+                  Upload
+                  <CloudUploadIcon />
+                </Button>
+              </CardContent>
+              <div />
             </div>
-          </Card>
-        </div>
-      );
-    }
-    return <img src={imagePreviewUrl} className="title-image" alt="title" />;
+          </div>
+        </Card>
+      </div>
+    );
+
+    // return <img src={imagePreviewUrl} className="title-image" alt="title" />;
   }
 
   render() {

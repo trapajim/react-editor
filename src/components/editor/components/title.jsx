@@ -4,24 +4,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
 import ComponentAction from './component-actions';
+import ComponentToolbar from './component-toolbar';
 
-const style = {
-  bigSelect: {
-    width: '150px',
-  },
-};
 class Title extends React.Component {
   static propTypes = {
     content: PropTypes.objectOf(PropTypes.shape),
     edit: PropTypes.bool,
-    editor: PropTypes.bool,
     position: PropTypes.number,
-    updateEditState: PropTypes.func,
-    classes: PropTypes.objectOf(PropTypes.shape),
   };
 
   static defaultProps = {
@@ -33,18 +24,12 @@ class Title extends React.Component {
 
   constructor(props) {
     super(props);
-    let heading = 'heading';
-    let contentText = '';
     const { content, edit } = this.props;
-    if (content != null) {
-      const { headingType, text } = content;
-      heading = headingType;
-      contentText = text;
-    }
+    const { text = '' } = content;
     this.state = {
       content,
       edit,
-      textLength: contentText.length,
+      textLength: text.length,
     };
 
     this.handleOnChangeHeading = this.handleOnChangeHeading.bind(this);
@@ -55,23 +40,6 @@ class Title extends React.Component {
     const { content } = this.state;
     content.headingType = event.target.value;
     this.setState({ content });
-  }
-
-  saveText() {
-    /* this.setState({
-      content: {
-        text: this.heading.value,
-      },
-    });
-    this.props.updateState(
-      {
-        text: this._heading.value,
-        headingType: this.state.headingType,
-      },
-      this.props.position,
-    );
-    */
-    this.toggleEdit();
   }
 
   handleTextChange(ev) {
@@ -86,18 +54,16 @@ class Title extends React.Component {
   }
 
   renderEditor() {
-    const { editor, classes } = this.props;
-    const {
-      edit,
-      content: { headingType, text },
-    } = this.state;
-    if (!editor || !edit) return '';
+    const { position } = this.props;
+    const { edit, content } = this.state;
+    const { headingType, text } = content;
+    if (!edit) return '';
     return (
       <div>
         <FormControl>
           <InputLabel htmlFor="age-simple">Heading type</InputLabel>
           <Select
-            className={classes.bigSelect}
+            style={{ width: 150 }}
             value={headingType}
             onChange={this.handleOnChangeHeading}
             inputProps={{
@@ -120,6 +86,7 @@ class Title extends React.Component {
             this.heading = ref;
           }}
         />
+        <ComponentToolbar content={content} position={position} />
       </div>
     );
   }
@@ -129,4 +96,4 @@ class Title extends React.Component {
   }
 }
 
-export default withStyles(style)(ComponentAction(Title));
+export default ComponentAction(Title);

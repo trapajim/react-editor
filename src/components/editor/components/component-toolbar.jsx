@@ -13,15 +13,13 @@ class ComponentToolbar extends React.Component {
   constructor(props) {
     super(props);
     this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
+    this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
   }
 
   handleSaveButtonClick() {
     const { content, position } = this.props;
-    // @todo: have to use Object.assign to remove the reference
-    // check if there's a better solution
-    const c = Object.assign({}, content);
     const { updateComponents } = this.context;
-    updateComponents(c, position);
+    updateComponents(content, position);
   }
 
   handleCancelButtonClick() {

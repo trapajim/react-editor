@@ -67,15 +67,16 @@ class EditorActions extends React.Component {
   }
 
   renderComponents() {
-    const { components } = this.context;
+    const { components, addedComponents } = this.context;
     const { size, classes } = this.props;
+
     return Object.keys(components).map(key => (
       <Tooltip
         key={components[key].title + key}
         title={components[key].title}
         TransitionComponent={Zoom}
         onClick={() => {
-          this.addComponents(key, components.length);
+          this.addComponents(key, addedComponents.length);
         }}
       >
         <IconButton

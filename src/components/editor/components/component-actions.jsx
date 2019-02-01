@@ -15,6 +15,7 @@ const ComponentActions = WrappedComponent => {
       edit: PropTypes.bool,
       position: PropTypes.number,
       updateEditState: PropTypes.func,
+      content: PropTypes.objectOf(PropTypes.shape),
       classes: PropTypes.objectOf(PropTypes.shape),
     };
 
@@ -27,26 +28,19 @@ const ComponentActions = WrappedComponent => {
 
     toggleEdit() {
       const { position, updateEditState } = this.props;
-      const { edit } = this.state;
-      if (!edit) {
-        updateEditState(
-          {
-            edit: true,
-          },
-          position,
-        );
-      }
-      this.setState({ edit });
+
+      updateEditState(position);
     }
 
     render() {
-      const { classes, edit, updateEditState } = this.props;
+      const { classes, edit, updateEditState, content, position } = this.props;
       return edit ? (
         <Paper elevation={10} className={classes.padding}>
           <WrappedComponent
             updateEditState={updateEditState}
             handleToggleEdit={this.toggleEdit}
-            {...this.props}
+            content={Object.assign({}, content)}
+            position={position}
             {...this.state}
           />
         </Paper>

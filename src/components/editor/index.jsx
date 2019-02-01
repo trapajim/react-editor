@@ -40,13 +40,14 @@ class Editor extends React.Component {
 
   updateEditStateOfComponent(position) {
     const { components } = this.state;
-    components[position].edit = false;
+    components[position].edit = !components[position].edit;
     this.setState({ components });
   }
 
   renderComponents() {
     const { components } = this.state;
-    return components.map(comp => {
+    const component = [...components];
+    return component.map(comp => {
       if (typeof comp.type === 'undefined') {
         return <div />;
       }
@@ -89,8 +90,8 @@ class Editor extends React.Component {
             }}
           >
             <EditorActions show={true} />
-            {this.renderComponents()}
           </EditorComponentContext.Provider>
+          {this.renderComponents()}
         </EditorContext.Provider>
       </div>
     );

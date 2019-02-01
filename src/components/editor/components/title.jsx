@@ -27,7 +27,9 @@ class Title extends React.Component {
   constructor(props) {
     super(props);
     const { content, edit } = this.props;
-    const { text = '' } = content;
+    const { text = '', headingType = 'heading' } = content;
+    content.text = text;
+    content.headingType = headingType;
     this.state = {
       content,
       edit,
@@ -59,7 +61,7 @@ class Title extends React.Component {
   renderEditor() {
     const { position, handleToggleEdit } = this.props;
     const { edit, content } = this.state;
-    const { headingType = 'heading', text } = content;
+    const { headingType = 'heading', text = '' } = content;
     if (!edit) return '';
     return (
       <div>

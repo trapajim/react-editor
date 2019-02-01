@@ -6,7 +6,7 @@ import Zoom from '@material-ui/core/Zoom';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grow from '@material-ui/core/Grow';
-import { EditorComponentContext } from '../editor-context';
+import { EditorComponentContext } from '../editor-component-context';
 
 const style = {
   padding: {
@@ -49,6 +49,23 @@ class EditorActions extends React.Component {
     this.setState({ showMenu: !showMenu });
   }
 
+  addComponents(type, position) {
+    const { addedComponents, setState } = this.context;
+    const currentState = [...addedComponents];
+    currentState.splice(position + 1, 0, {
+      type,
+      position,
+      id: addedComponents.length,
+      content: {},
+      edit: true,
+    });
+
+    for (let i = 0; i < currentState.length; i += 1) {
+      currentState[i].position = i;
+    }
+    setState({ components: currentState });
+  }
+
   renderComponents() {
     const { components } = this.context;
     const { size, classes } = this.props;
@@ -57,6 +74,9 @@ class EditorActions extends React.Component {
         key={components[key].title + key}
         title={components[key].title}
         TransitionComponent={Zoom}
+        onClick={() => {
+          this.addComponents(key, components.length);
+        }}
       >
         <IconButton
           aria-label={components[key].title}

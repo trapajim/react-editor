@@ -34,7 +34,7 @@ const css = () => ({
 });
 class TitleImage extends React.Component {
   static propTypes = {
-    components: PropTypes.objectOf(PropTypes.object),
+    components: PropTypes.arrayOf(PropTypes.object),
     defaultValue: PropTypes.string,
     checkIsMobile: PropTypes.bool,
     maxImageSize: PropTypes.number,

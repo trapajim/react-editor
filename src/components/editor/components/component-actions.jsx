@@ -40,10 +40,11 @@ const ComponentActions = WrappedComponent => {
     }
 
     render() {
-      const { classes, edit } = this.props;
+      const { classes, edit, updateEditState } = this.props;
       return edit ? (
         <Paper elevation={10} className={classes.padding}>
           <WrappedComponent
+            updateEditState={updateEditState}
             handleToggleEdit={this.toggleEdit}
             {...this.props}
             {...this.state}

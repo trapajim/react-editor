@@ -13,12 +13,14 @@ class Title extends React.Component {
     content: PropTypes.objectOf(PropTypes.shape),
     edit: PropTypes.bool,
     position: PropTypes.number,
+    handleToggleEdit: PropTypes.func,
   };
 
   static defaultProps = {
     content: {
       headingType: 'heading',
       text: '',
+      handleToggleEdit: () => {},
     },
   };
 
@@ -44,19 +46,20 @@ class Title extends React.Component {
 
   handleTextChange(ev) {
     const { textLength, content } = this.state;
+    const { text = '' } = content;
     const val = ev.target.value;
     const length = val.length - textLength;
     content.text = val;
     this.setState({
-      textLength: textLength + length,
+      textLength: text + length,
       content,
     });
   }
 
   renderEditor() {
-    const { position } = this.props;
+    const { position, handleToggleEdit } = this.props;
     const { edit, content } = this.state;
-    const { headingType, text } = content;
+    const { headingType = 'heading', text } = content;
     if (!edit) return '';
     return (
       <div>
@@ -86,7 +89,13 @@ class Title extends React.Component {
             this.heading = ref;
           }}
         />
-        <ComponentToolbar content={content} position={position} />
+        <ComponentToolbar
+          content={content}
+          position={position}
+          cancelActionCallBack={() => {
+            handleToggleEdit();
+          }}
+        />
       </div>
     );
   }

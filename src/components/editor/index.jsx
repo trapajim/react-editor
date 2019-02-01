@@ -1,12 +1,11 @@
 import React from 'react';
+import { EditorContext } from './editor-context';
 import {
-  EditorContext,
   EditorComponentContext,
   DefaultComponents,
-} from './editor-context';
+} from './editor-component-context';
 import { Excerpt, BlogTitle, TitleImage } from './components/static';
 import EditorActions from './components/editor-actions';
-import Title from './components/title';
 
 // const Test = React.lazy(() => import('./test.jsx'));
 
@@ -14,28 +13,18 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      components: [
-        {
-          type: 'Title',
-          edit: true,
-          content: {
-            headingType: 'heading',
-            text: 'hello',
-          },
-        },
-        {
-          type: 'Title',
-          edit: false,
-          content: {
-            headingType: 'heading',
-            text:
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Tokyo_Tower_and_around_Skyscrapers.jpg/238px-Tokyo_Tower_and_around_Skyscrapers.jpg',
-          },
-        },
-      ],
+      setState: this.handleSetState.bind(this),
+      components: [],
     };
     //
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
+    this.updateEditStateOfComponent = this.updateEditStateOfComponent.bind(
+      this,
+    );
+  }
+
+  handleSetState(fn) {
+    this.setState(fn);
   }
 
   onComponentUpdate(content, position) {
@@ -49,8 +38,34 @@ class Editor extends React.Component {
     localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
 
-  render() {
+  updateEditStateOfComponent(position) {
     const { components } = this.state;
+    components[position].edit = false;
+    this.setState({ components });
+  }
+
+  renderComponents() {
+    const { components } = this.state;
+    return components.map(comp => {
+      if (typeof comp.type === 'undefined') {
+        return <div />;
+      }
+      const Component = DefaultComponents[comp.type.toLowerCase()].component;
+
+      return (
+        <Component
+          key={'component' + comp.position}
+          edit={comp.edit}
+          position={comp.position}
+          content={comp.content}
+          updateEditState={this.updateEditStateOfComponent}
+        />
+      );
+    });
+  }
+
+  render() {
+    const { components, setState } = this.state;
     return (
       <div>
         <EditorContext.Provider
@@ -67,32 +82,18 @@ class Editor extends React.Component {
             updateCurChar={() => {}}
           />
           <EditorComponentContext.Provider
-            value={{ components: DefaultComponents }}
+            value={{
+              components: DefaultComponents,
+              addedComponents: components,
+              setState,
+            }}
           >
             <EditorActions show={true} />
+            {this.renderComponents()}
           </EditorComponentContext.Provider>
-          <Title
-            edit={components[0].edit}
-            position={0}
-            content={components[0].content}
-          />
-          <Title
-            edit={components[1].edit}
-            position={1}
-            content={components[1].content}
-          />
         </EditorContext.Provider>
       </div>
     );
   }
 }
-/*
-Editor.propTypes = {
-  components: PropTypes.arrayOf(PropTypes.String),
-};
-
-Editor.defaultProps = {
-  components: DefaultComponents,
-};
-*/
 export default Editor;

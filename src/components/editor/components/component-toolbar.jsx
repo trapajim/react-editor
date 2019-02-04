@@ -49,7 +49,13 @@ class ComponentToolbar extends React.Component {
 
     moveComponent(position, this.getNewPositionOfElement(moveDirection));
   }
-  handleBookmarkButtonClick() {}
+
+  handleBookmarkButtonClick() {
+    const { updateMarkedComponents } = this.context;
+    const { position } = this.props;
+    updateMarkedComponents(position);
+  }
+
   getNewPositionOfElement(direction) {
     const { position } = this.props;
     let newPosition = 0;

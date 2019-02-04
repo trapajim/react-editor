@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import ComponentToolbar from './component-toolbar';
 
 const style = {
   padding: {
     padding: '10px',
+  },
+  border: {
+    border: '2px solid #2196F3',
   },
 };
 
@@ -18,6 +22,7 @@ const ComponentActions = WrappedComponent => {
       updateEditState: PropTypes.func,
       content: PropTypes.objectOf(PropTypes.shape),
       classes: PropTypes.objectOf(PropTypes.shape),
+      bordered: PropTypes.bool,
     };
 
     constructor(props) {
@@ -40,9 +45,26 @@ const ComponentActions = WrappedComponent => {
 
     render() {
       // @todo figure out why I have to use Object assign
-      const { classes, edit, updateEditState, content, position } = this.props;
+      const {
+        classes,
+        edit,
+        updateEditState,
+        content,
+        position,
+        bordered,
+      } = this.props;
+      const paperClass = {};
+      paperClass.padding = classes.padding;
+      if (bordered) {
+        paperClass.border = classes.border;
+      }
       return edit ? (
-        <Paper elevation={10} className={classes.padding}>
+        <Paper
+          elevation={10}
+          className={classNames(classes.padding, {
+            [classes.border]: bordered,
+          })}
+        >
           <WrappedComponent
             updateEditState={updateEditState}
             handleToggleEdit={this.toggleEdit}

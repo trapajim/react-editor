@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import Select from '@material-ui/core/Select';
 import Title from '../src/components/editor/components/title';
 import ComponentToolbar from '../src/components/editor/components/component-toolbar';
-import Select from '@material-ui/core/Select';
 
 describe('<Title edit/>', () => {
   const parent = shallow(<Title edit />);

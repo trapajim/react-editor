@@ -11,8 +11,7 @@ class Title extends React.Component {
   static propTypes = {
     content: PropTypes.objectOf(PropTypes.shape),
     edit: PropTypes.bool,
-    position: PropTypes.number,
-    handleToggleEdit: PropTypes.func,
+    setState: PropTypes.func,
   };
 
   static defaultProps = {

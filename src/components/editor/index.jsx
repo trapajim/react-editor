@@ -23,6 +23,7 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       setState: this.handleSetState.bind(this),
+      markedComponent: {},
       components: [],
     };
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
@@ -31,10 +32,22 @@ class Editor extends React.Component {
     );
     this.deleteComponentAtIndex = this.deleteComponentAtIndex.bind(this);
     this.moveComponent = this.moveComponent.bind(this);
+    this.updateMarkedComponents = this.updateMarkedComponents.bind(this);
   }
 
   handleSetState(fn) {
     this.setState(fn);
+  }
+
+  updateMarkedComponents(pos) {
+    const { markedComponent } = this.state;
+    if (typeof markedComponent[pos] === 'undefined') {
+      markedComponent[pos] = true;
+    } else {
+      delete markedComponent[pos];
+    }
+
+    this.setState({ markedComponent });
   }
 
   onComponentUpdate(content, position) {
@@ -42,10 +55,6 @@ class Editor extends React.Component {
     components[position].content = content;
     components[position].edit = false;
     this.setComponents(components);
-    /* if (components[position].type === 'Legacy') {
-      return;
-    }
-    */
   }
 
   deleteComponentAtIndex(position) {
@@ -80,7 +89,7 @@ class Editor extends React.Component {
   }
 
   renderComponents() {
-    const { components } = this.state;
+    const { components, markedComponent } = this.state;
     const component = [...components];
     return component.map(comp => {
       if (typeof comp.type === 'undefined') {
@@ -90,6 +99,7 @@ class Editor extends React.Component {
 
       return (
         <Component
+          bordered={markedComponent[comp.position]}
           key={'component' + comp.id}
           edit={comp.edit}
           position={comp.position}
@@ -109,6 +119,7 @@ class Editor extends React.Component {
             updateComponents: this.onComponentUpdate,
             deleteComponentAtIndex: this.deleteComponentAtIndex,
             moveComponent: this.moveComponent,
+            updateMarkedComponents: this.updateMarkedComponents,
           }}
         >
           <BlogTitle defaultValue="Title" updateCurChar={() => {}} />

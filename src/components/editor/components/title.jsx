@@ -88,9 +88,6 @@ class Title extends React.Component {
           helperText={textLength}
           value={text}
           onChange={this.handleTextChange}
-          ref={ref => {
-            this.heading = ref;
-          }}
         />
         <ComponentToolbar
           content={content}

@@ -30,6 +30,7 @@ class Title extends React.Component {
     const { text = '', headingType = 'heading' } = content;
     content.text = text;
     content.headingType = headingType;
+
     this.state = {
       content,
       edit,
@@ -47,20 +48,19 @@ class Title extends React.Component {
   }
 
   handleTextChange(ev) {
-    const { textLength, content } = this.state;
-    const { text = '' } = content;
+    const { content } = this.state;
     const val = ev.target.value;
-    const length = val.length - textLength;
+
     content.text = val;
     this.setState({
-      textLength: text + length,
+      textLength: val.length,
       content,
     });
   }
 
   renderEditor() {
     const { position, handleToggleEdit } = this.props;
-    const { edit, content } = this.state;
+    const { edit, content, textLength } = this.state;
     const { headingType = 'heading', text = '' } = content;
     if (!edit) return '';
     return (
@@ -85,6 +85,7 @@ class Title extends React.Component {
           label="Title"
           margin="dense"
           fullWidth
+          helperText={textLength}
           value={text}
           onChange={this.handleTextChange}
           ref={ref => {

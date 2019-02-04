@@ -1,6 +1,5 @@
 const getImageFormUrl = (url, callback) => {
   const img = new Image();
-  console.log(url);
   // img.setAttribute('crossOrigin', 'anonymous');
   img.crossOrigin = 'Anonymous';
   img.onload = () => {

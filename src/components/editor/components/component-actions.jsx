@@ -33,6 +33,7 @@ const ComponentActions = WrappedComponent => {
     }
 
     render() {
+      // @todo figure out why I have to use Object assign
       const { classes, edit, updateEditState, content, position } = this.props;
       return edit ? (
         <Paper elevation={10} className={classes.padding}>

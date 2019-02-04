@@ -21,6 +21,7 @@ class Editor extends React.Component {
     this.updateEditStateOfComponent = this.updateEditStateOfComponent.bind(
       this,
     );
+    this.deleteComponentAtIndex = this.deleteComponentAtIndex.bind(this);
   }
 
   handleSetState(fn) {
@@ -35,6 +36,16 @@ class Editor extends React.Component {
     if (components[position].type === 'Legacy') {
       return;
     }
+    localStorage.setItem(this.localStorageName, JSON.stringify(components));
+  }
+
+  deleteComponentAtIndex(position) {
+    const { components } = this.state;
+    components.splice(position, 1);
+    for (let i = 0; i < components.length; i += 1) {
+      components[i].position = i;
+    }
+    this.setState({ components });
     localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
 
@@ -72,6 +83,7 @@ class Editor extends React.Component {
         <EditorContext.Provider
           value={{
             updateComponents: this.onComponentUpdate,
+            deleteComponentAtIndex: this.deleteComponentAtIndex,
           }}
         >
           <BlogTitle defaultValue="Title" updateCurChar={() => {}} />

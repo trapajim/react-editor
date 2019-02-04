@@ -3,12 +3,6 @@ import { mount } from 'enzyme';
 
 import BlogTitle from '../src/components/editor/components/static/blog-title';
 
-describe('<BlogTitle editor={false} />', () => {
-  const component = mount(<BlogTitle editor={false} />);
-  it('it should render a h1 title element if editor is false', () => {
-    expect(component.find('h1')).toHaveLength(1);
-  });
-});
 describe('<BlogTitle editor/>', () => {
   const onChangeMock = jest.fn();
   const title = 'hello';

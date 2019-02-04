@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SaveIcon from '@material-ui/icons/SaveOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
+import VertTop from '@material-ui/icons/VerticalAlignTopOutlined';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Toolbar from '@material-ui/core/Toolbar';
 import Zoom from '@material-ui/core/Zoom';
@@ -16,6 +17,7 @@ class ComponentToolbar extends React.Component {
     this.handleSaveButtonClick = this.handleSaveButtonClick.bind(this);
     this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+    this.handleMoveButtonClicked = this.handleMoveButtonClicked.bind(this);
   }
 
   handleSaveButtonClick() {
@@ -35,10 +37,25 @@ class ComponentToolbar extends React.Component {
     deleteComponentAtIndex(position);
   }
 
+  handleMoveButtonClicked() {
+    const { moveComponent } = this.context;
+    const { position } = this.props;
+    moveComponent(position, 0);
+  }
+
   render() {
     return (
       <Toolbar>
         <div style={{ flexGrow: 1 }} />
+        <Tooltip
+          title="move to the top"
+          TransitionComponent={Zoom}
+          onClick={this.handleMoveButtonClicked}
+        >
+          <IconButton aria-label="move to the top">
+            <VertTop />
+          </IconButton>
+        </Tooltip>
         <Tooltip
           title="delete"
           TransitionComponent={Zoom}

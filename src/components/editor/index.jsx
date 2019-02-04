@@ -30,6 +30,7 @@ class Editor extends React.Component {
       this,
     );
     this.deleteComponentAtIndex = this.deleteComponentAtIndex.bind(this);
+    this.moveComponent = this.moveComponent.bind(this);
   }
 
   handleSetState(fn) {
@@ -40,25 +41,42 @@ class Editor extends React.Component {
     const { components } = this.state;
     components[position].content = content;
     components[position].edit = false;
-    this.setState({ components });
-    if (components[position].type === 'Legacy') {
+    this.setComponents(components);
+    /* if (components[position].type === 'Legacy') {
       return;
     }
-    localStorage.setItem(this.localStorageName, JSON.stringify(components));
+    */
   }
 
   deleteComponentAtIndex(position) {
     let { components } = this.state;
     components.splice(position, 1);
     components = Editor.resetComponentPosition(components);
-    this.setState({ components });
-    localStorage.setItem(this.localStorageName, JSON.stringify(components));
+    this.setComponents(components);
+  }
+
+  moveComponent(oldIndex, newIndex) {
+    let { components } = this.state;
+    let index = newIndex;
+    if (index >= components.length) {
+      index = components.length - 1;
+    }
+
+    components.splice(index, 0, components.splice(oldIndex, 1)[0]);
+    components = Editor.resetComponentPosition(components);
+    this.setComponents(components);
+    return components;
   }
 
   updateEditStateOfComponent(position) {
     const { components } = this.state;
     components[position].edit = !components[position].edit;
+    this.setComponents(components);
+  }
+
+  setComponents(components) {
     this.setState({ components });
+    localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
 
   renderComponents() {
@@ -90,6 +108,7 @@ class Editor extends React.Component {
           value={{
             updateComponents: this.onComponentUpdate,
             deleteComponentAtIndex: this.deleteComponentAtIndex,
+            moveComponent: this.moveComponent,
           }}
         >
           <BlogTitle defaultValue="Title" updateCurChar={() => {}} />

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
+import ComponentToolbar from './component-toolbar';
 
 const style = {
   padding: {
@@ -21,15 +22,20 @@ const ComponentActions = WrappedComponent => {
 
     constructor(props) {
       super(props);
-      const { edit } = this.props;
-      this.state = { edit };
+      const { edit, content, position } = this.props;
+      this.state = { edit, content, position };
       this.toggleEdit = this.toggleEdit.bind(this);
+      this.onHandleSetState = this.onHandleSetState.bind(this);
     }
 
     toggleEdit() {
       const { position, updateEditState } = this.props;
 
       updateEditState(position);
+    }
+
+    onHandleSetState(fn) {
+      this.setState(fn);
     }
 
     render() {
@@ -42,7 +48,13 @@ const ComponentActions = WrappedComponent => {
             handleToggleEdit={this.toggleEdit}
             content={Object.assign({}, content)}
             position={position}
+            setState={this.onHandleSetState}
             {...this.state}
+          />
+          <ComponentToolbar
+            content={content}
+            position={position}
+            cancelActionCallBack={this.toggleEdit}
           />
         </Paper>
       ) : (

@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import ComponentAction from './component-actions';
-import ComponentToolbar from './component-toolbar';
 
 class Title extends React.Component {
   static propTypes = {
@@ -32,7 +31,6 @@ class Title extends React.Component {
     content.headingType = headingType;
 
     this.state = {
-      content,
       edit,
       textLength: text.length,
     };
@@ -42,31 +40,28 @@ class Title extends React.Component {
   }
 
   handleOnChangeHeading(event) {
-    const { content } = this.state;
+    const { content, setState } = this.props;
     content.headingType = event.target.value;
-    this.setState({ content });
+    setState({ content });
   }
 
   handleTextChange(ev) {
-    const { content } = this.state;
+    const { content, setState } = this.props;
     const val = ev.target.value;
-
     content.text = val;
-    this.setState({
-      textLength: val.length,
-      content,
-    });
+    this.setState({ textLength: val.length });
+    setState({ content });
   }
 
   renderEditor() {
-    const { position, handleToggleEdit } = this.props;
-    const { edit, content, textLength } = this.state;
+    const { content } = this.props;
+    const { edit, textLength } = this.state;
     const { headingType = 'heading', text = '' } = content;
     if (!edit) return '';
     return (
       <div>
         <FormControl>
-          <InputLabel htmlFor="age-simple">Heading type</InputLabel>
+          <InputLabel>Heading type</InputLabel>
           <Select
             style={{ width: 150 }}
             value={headingType}
@@ -88,13 +83,6 @@ class Title extends React.Component {
           helperText={textLength}
           value={text}
           onChange={this.handleTextChange}
-        />
-        <ComponentToolbar
-          content={content}
-          position={position}
-          cancelActionCallBack={() => {
-            handleToggleEdit();
-          }}
         />
       </div>
     );

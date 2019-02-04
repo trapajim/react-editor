@@ -4,6 +4,7 @@ import SaveIcon from '@material-ui/icons/SaveOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import VertTop from '@material-ui/icons/VerticalAlignTopOutlined';
 import VertBottom from '@material-ui/icons/VerticalAlignBottomOutlined';
+import Bookmark from '@material-ui/icons/BookmarkOutlined';
 import ArrowDown from '@material-ui/icons/KeyboardArrowDownOutlined';
 import ArrowUp from '@material-ui/icons/KeyboardArrowUpOutlined';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
@@ -21,6 +22,7 @@ class ComponentToolbar extends React.Component {
     this.handleCancelButtonClick = this.handleCancelButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
     this.handleMoveButtonClicked = this.handleMoveButtonClicked.bind(this);
+    this.handleBookmarkButtonClick = this.handleBookmarkButtonClick.bind(this);
   }
 
   handleSaveButtonClick() {
@@ -47,7 +49,7 @@ class ComponentToolbar extends React.Component {
 
     moveComponent(position, this.getNewPositionOfElement(moveDirection));
   }
-
+  handleBookmarkButtonClick() {}
   getNewPositionOfElement(direction) {
     const { position } = this.props;
     let newPosition = 0;
@@ -117,6 +119,14 @@ class ComponentToolbar extends React.Component {
             onClick={this.handleDeleteButtonClick}
           >
             <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="mark" TransitionComponent={Zoom}>
+          <IconButton
+            aria-label="mark"
+            onClick={this.handleBookmarkButtonClick}
+          >
+            <Bookmark />
           </IconButton>
         </Tooltip>
         <Tooltip title="save" TransitionComponent={Zoom}>

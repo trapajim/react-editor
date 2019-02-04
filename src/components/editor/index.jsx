@@ -10,13 +10,21 @@ import EditorActions from './components/editor-actions';
 // const Test = React.lazy(() => import('./test.jsx'));
 
 class Editor extends React.Component {
+  static resetComponentPosition(components) {
+    const returnValue = components.map((element, index) => {
+      const el = element;
+      el.position = index;
+      return el;
+    });
+    return returnValue;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       setState: this.handleSetState.bind(this),
       components: [],
     };
-    //
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
     this.updateEditStateOfComponent = this.updateEditStateOfComponent.bind(
       this,
@@ -40,11 +48,9 @@ class Editor extends React.Component {
   }
 
   deleteComponentAtIndex(position) {
-    const { components } = this.state;
+    let { components } = this.state;
     components.splice(position, 1);
-    for (let i = 0; i < components.length; i += 1) {
-      components[i].position = i;
-    }
+    components = Editor.resetComponentPosition(components);
     this.setState({ components });
     localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
@@ -66,7 +72,7 @@ class Editor extends React.Component {
 
       return (
         <Component
-          key={'component' + comp.position}
+          key={'component' + comp.id}
           edit={comp.edit}
           position={comp.position}
           content={comp.content}

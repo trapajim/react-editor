@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import SaveIcon from '@material-ui/icons/SaveOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import VertTop from '@material-ui/icons/VerticalAlignTopOutlined';
@@ -12,8 +13,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Zoom from '@material-ui/core/Zoom';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
 
 import { EditorContext } from '../editor-context';
+
+const style = {
+  color: {
+    color: '#2196F3',
+  },
+};
 
 class ComponentToolbar extends React.Component {
   constructor(props) {
@@ -79,11 +87,13 @@ class ComponentToolbar extends React.Component {
   }
 
   render() {
+    const { classes, bordered } = this.props;
     return (
       <Toolbar>
         <div style={{ flexGrow: 1 }} />
         <Tooltip title="move 1 up" TransitionComponent={Zoom}>
           <IconButton
+            className={classNames({ [classes.color]: bordered })}
             aria-label="move 1 up"
             data-move="up"
             onClick={this.handleMoveButtonClicked}
@@ -93,6 +103,7 @@ class ComponentToolbar extends React.Component {
         </Tooltip>
         <Tooltip title="move 1 down" TransitionComponent={Zoom}>
           <IconButton
+            className={classNames({ [classes.color]: bordered })}
             aria-label="move 1 down"
             data-move="down"
             onClick={this.handleMoveButtonClicked}
@@ -100,27 +111,33 @@ class ComponentToolbar extends React.Component {
             <ArrowDown />
           </IconButton>
         </Tooltip>
-
-        <Tooltip title="move to the top" TransitionComponent={Zoom}>
-          <IconButton
-            aria-label="move to the top"
-            data-move="first"
-            onClick={this.handleMoveButtonClicked}
-          >
-            <VertTop />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="move to bottom" TransitionComponent={Zoom}>
-          <IconButton
-            aria-label="move to top"
-            data-move="last"
-            onClick={this.handleMoveButtonClicked}
-          >
-            <VertBottom />
-          </IconButton>
-        </Tooltip>
+        {bordered ? (
+          <div />
+        ) : (
+          <div>
+            <Tooltip title="move to the top" TransitionComponent={Zoom}>
+              <IconButton
+                aria-label="move to the top"
+                data-move="first"
+                onClick={this.handleMoveButtonClicked}
+              >
+                <VertTop />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="move to bottom" TransitionComponent={Zoom}>
+              <IconButton
+                aria-label="move to top"
+                data-move="last"
+                onClick={this.handleMoveButtonClicked}
+              >
+                <VertBottom />
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
         <Tooltip title="delete" TransitionComponent={Zoom}>
           <IconButton
+            className={classNames({ [classes.color]: bordered })}
             aria-label="delete"
             onClick={this.handleDeleteButtonClick}
           >
@@ -129,6 +146,7 @@ class ComponentToolbar extends React.Component {
         </Tooltip>
         <Tooltip title="mark" TransitionComponent={Zoom}>
           <IconButton
+            className={classNames({ [classes.color]: bordered })}
             aria-label="mark"
             onClick={this.handleBookmarkButtonClick}
           >
@@ -157,5 +175,6 @@ ComponentToolbar.propTypes = {
   content: PropTypes.objectOf(PropTypes.string),
   position: PropTypes.number,
   cancelActionCallBack: PropTypes.func,
+  bordered: PropTypes.bool,
 };
-export default ComponentToolbar;
+export default withStyles(style)(ComponentToolbar);

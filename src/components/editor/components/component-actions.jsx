@@ -76,6 +76,7 @@ const ComponentActions = WrappedComponent => {
           <ComponentToolbar
             content={content}
             position={position}
+            bordered={bordered}
             cancelActionCallBack={this.toggleEdit}
           />
         </Paper>

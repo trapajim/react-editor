@@ -33,6 +33,10 @@ class EditorActions extends React.Component {
 
   static defaultProps = { show: false, size: 'small' };
 
+  static generateId(pre) {
+    return `${pre}_${new Date().getTime()}`;
+  }
+
   constructor(props) {
     super(props);
     const { show } = this.props;
@@ -55,7 +59,7 @@ class EditorActions extends React.Component {
     currentState.splice(position + 1, 0, {
       type,
       position,
-      id: addedComponents.length,
+      id: EditorActions.generateId(type),
       content: {},
       edit: true,
     });

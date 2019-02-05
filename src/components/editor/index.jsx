@@ -57,23 +57,74 @@ class Editor extends React.Component {
     this.setComponents(components);
   }
 
+  isMultiAction(position) {
+    const { markedComponent } = this.state;
+    return typeof markedComponent[position] !== 'undefined';
+  }
+
+  resetMarkedComponents() {
+    this.setState({ markedComponent: {} });
+  }
+
   deleteComponentAtIndex(position) {
-    let { components } = this.state;
-    components.splice(position, 1);
-    components = Editor.resetComponentPosition(components);
-    this.setComponents(components);
+    const { components } = this.state;
+    let deleteIndexes = [position];
+
+    if (this.isMultiAction(position)) {
+      const { markedComponent } = this.state;
+      deleteIndexes = markedComponent;
+      this.resetMarkedComponents();
+    }
+    let newComponentState = [];
+    components.forEach(el => {
+      if (typeof deleteIndexes[el.position] === 'undefined') {
+        newComponentState.push(el);
+      }
+    });
+    newComponentState = Editor.resetComponentPosition(newComponentState);
+    this.setComponents(newComponentState);
   }
 
   moveComponent(oldIndex, newIndex) {
     let { components } = this.state;
     let index = newIndex;
-    if (index >= components.length) {
-      index = components.length - 1;
-    }
 
-    components.splice(index, 0, components.splice(oldIndex, 1)[0]);
+    if (this.isMultiAction(oldIndex)) {
+      components = this.moveMultipleElementsToPosition(oldIndex > newIndex);
+    } else {
+      if (index >= components.length) {
+        index = components.length - 1;
+      }
+      components.splice(index, 0, components.splice(oldIndex, 1)[0]);
+    }
     components = Editor.resetComponentPosition(components);
     this.setComponents(components);
+  }
+
+  moveMultipleElementsToPosition(shouldMoveUp) {
+    const { markedComponent } = { ...this.state };
+    const keys = Object.keys(markedComponent);
+    keys.sort((a, b) => (shouldMoveUp ? a - b : b - a));
+    const { components } = this.state;
+    keys.forEach(k => {
+      const key = parseInt(k, 10);
+      console.log(k);
+      let newPosition = key + 1;
+      if (shouldMoveUp) {
+        newPosition = key - 1;
+      }
+      delete markedComponent[key];
+      markedComponent[newPosition] = true;
+      const oldIndex = key;
+      let newIndex = newPosition;
+      if (newIndex >= components.length) {
+        newIndex = components.length - 1;
+      }
+
+      components[oldIndex].position = newIndex;
+      components[newIndex].position = oldIndex;
+      components.splice(newIndex, 0, components.splice(oldIndex, 1)[0]);
+    });
     return components;
   }
 

@@ -154,7 +154,7 @@ class Editor extends React.Component {
           key={'component' + comp.id}
           edit={comp.edit}
           position={comp.position}
-          content={comp.content}
+          content={Object.assign({}, comp.content)}
           updateEditState={this.updateEditStateOfComponent}
         />
       );

@@ -15,6 +15,7 @@ import DeveloperBoard from '@material-ui/icons/DeveloperBoardOutlined';
 import PresentToAll from '@material-ui/icons/PresentToAllOutlined';
 import GroupWork from '@material-ui/icons/GroupWorkOutlined';
 import Title from './components/title';
+import Text from './components/text';
 
 export const DefaultComponents = {
   title: {
@@ -22,10 +23,10 @@ export const DefaultComponents = {
     icon: <TitleIcon fontSize="small" />,
     title: 'Title',
   },
-  textfield: {
-    component: <div />,
+  text: {
+    component: Text,
     icon: <TextFieldsIcon fontSize="small" />,
-    title: 'Textfield',
+    title: 'text',
   },
   link: {
     component: <div />,

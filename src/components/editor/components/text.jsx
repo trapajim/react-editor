@@ -29,12 +29,12 @@ class Text extends React.Component {
     };
   }
 
-  saveText(ev) {
+  saveText(html, text) {
     const { content, setState } = this.props;
-    const val = ev.editor.getData();
+    const val = html;
     const editContent = content;
     editContent.text = val;
-    const textLength = ev.editor.document.getBody().getText().length;
+    const textLength = text.length;
     this.setState({ textLength });
     setState({ editContent });
   }
@@ -60,7 +60,10 @@ class Text extends React.Component {
             ],
           }}
           onChange={event => {
-            this.saveText(event);
+            this.saveText(
+              event.editor.getData(),
+              event.editor.document.getBody().getText(),
+            );
           }}
         />
 

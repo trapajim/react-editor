@@ -36,7 +36,7 @@ class Text extends React.Component {
     editContent.text = val;
     const textLength = text.length;
     this.setState({ textLength });
-    setState({ editContent });
+    setState({ content: editContent });
   }
 
   renderEditor() {

@@ -6,25 +6,22 @@ import ComponentAction from './component-actions';
 class Text extends React.Component {
   static propTypes = {
     content: PropTypes.objectOf(PropTypes.shape),
-    edit: PropTypes.bool,
     setState: PropTypes.func,
   };
 
   static defaultProps = {
     content: {
       text: '',
-      handleToggleEdit: () => {},
     },
   };
 
   constructor(props) {
     super(props);
-    const { content, edit } = this.props;
+    const { content } = this.props;
     const { text = '' } = content;
     content.text = text;
 
     this.state = {
-      edit,
       textLength: text.length,
     };
   }
@@ -41,9 +38,8 @@ class Text extends React.Component {
 
   renderEditor() {
     const { content } = this.props;
-    const { edit, textLength } = this.state;
+    const { textLength } = this.state;
     const { text = '' } = content;
-    if (!edit) return '';
     return (
       <div>
         <CKEditor

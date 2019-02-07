@@ -10,7 +10,6 @@ import ComponentAction from './component-actions';
 class Title extends React.Component {
   static propTypes = {
     content: PropTypes.objectOf(PropTypes.shape),
-    edit: PropTypes.bool,
     setState: PropTypes.func,
   };
 
@@ -18,19 +17,17 @@ class Title extends React.Component {
     content: {
       headingType: 'heading',
       text: '',
-      handleToggleEdit: () => {},
     },
   };
 
   constructor(props) {
     super(props);
-    const { content, edit } = this.props;
+    const { content } = this.props;
     const { text = '', headingType = 'heading' } = content;
     content.text = text;
     content.headingType = headingType;
 
     this.state = {
-      edit,
       textLength: text.length,
     };
 
@@ -54,9 +51,8 @@ class Title extends React.Component {
 
   renderEditor() {
     const { content } = this.props;
-    const { edit, textLength } = this.state;
+    const { textLength } = this.state;
     const { headingType = 'heading', text = '' } = content;
-    if (!edit) return '';
     return (
       <div>
         <FormControl>

@@ -2,7 +2,7 @@ import React from 'react';
 import TitleIcon from '@material-ui/icons/TitleOutlined';
 import TextFieldsIcon from '@material-ui/icons/TextFieldsOutlined';
 import LinkIcon from '@material-ui/icons/LinkOutlined';
-import Quote from '@material-ui/icons/FormatQuoteOutlined';
+import QuoteIcon from '@material-ui/icons/FormatQuoteOutlined';
 import VideoCam from '@material-ui/icons/VideocamOutlined';
 import LiveTv from '@material-ui/icons/LiveTvOutlined';
 import Photo from '@material-ui/icons/InsertPhotoOutlined';
@@ -17,6 +17,7 @@ import GroupWork from '@material-ui/icons/GroupWorkOutlined';
 import Title from './components/title';
 import Text from './components/text';
 import Link from './components/link';
+import Quote from './components/quote';
 
 export const DefaultComponents = {
   title: {
@@ -35,8 +36,8 @@ export const DefaultComponents = {
     title: 'Link',
   },
   quote: {
-    component: <div />,
-    icon: <Quote fontSize="small" />,
+    component: Quote,
+    icon: <QuoteIcon fontSize="small" />,
     title: 'Quote',
   },
   videoCam: {

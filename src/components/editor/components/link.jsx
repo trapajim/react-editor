@@ -5,10 +5,12 @@ import TextField from '@material-ui/core/TextField';
 import ComponentAction from './component-actions';
 import Img from '../../helper/Img';
 
+/*
+ @todo remove this in the futur
+ */
 class Link extends React.Component {
   static propTypes = {
     content: PropTypes.objectOf(PropTypes.shape),
-    edit: PropTypes.bool,
     setState: PropTypes.func,
   };
 
@@ -22,11 +24,10 @@ class Link extends React.Component {
 
   constructor(props) {
     super(props);
-    const { content, edit } = this.props;
+    const { content } = this.props;
     const { desc = '', title = '' } = content;
     this.timer = false;
     this.state = {
-      edit,
       textLength: desc.length + title.length,
     };
   }
@@ -56,7 +57,6 @@ class Link extends React.Component {
     const { content } = this.props;
     const { edit, textLength } = this.state;
     const { url = '', title = '', desc = '', img = '' } = content;
-    if (!edit) return '';
     return (
       <Grid container spacing={16} justify="center" alignItems="center">
         <Grid item xs={4}>
@@ -90,6 +90,7 @@ class Link extends React.Component {
             label="description"
             margin="dense"
             fullWidth
+            multiline
             value={desc}
             rows={4}
             onChange={evt => this.handleTextChange(evt, 'desc')}

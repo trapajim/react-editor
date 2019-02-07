@@ -40,7 +40,6 @@ class Link extends React.Component {
       const url = encodeURIComponent(link);
       const response = await fetch('https://api.urlmeta.org/?url=' + url);
       const data = await response.json();
-      console.log(data);
     }, 500);
   }
 

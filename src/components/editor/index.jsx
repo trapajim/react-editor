@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { EditorContext } from './editor-context';
 import {
   EditorComponentContext,
@@ -21,9 +22,12 @@ class Editor extends React.Component {
 
   constructor(props) {
     super(props);
+
+    const editorComponents = props.editorComponents || DefaultComponents;
     this.state = {
       setState: this.handleSetState.bind(this),
       markedComponent: {},
+      editorComponents,
       components: [],
     };
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
@@ -102,13 +106,13 @@ class Editor extends React.Component {
   }
 
   moveMultipleElementsToPosition(shouldMoveUp) {
+    // @todo rework this mess
     const { markedComponent } = { ...this.state };
     const keys = Object.keys(markedComponent);
     keys.sort((a, b) => (shouldMoveUp ? a - b : b - a));
     const { components } = this.state;
     keys.forEach(k => {
       const key = parseInt(k, 10);
-      console.log(k);
       let newPosition = key + 1;
       if (shouldMoveUp) {
         newPosition = key - 1;
@@ -140,16 +144,20 @@ class Editor extends React.Component {
   }
 
   renderComponents() {
-    const { components, markedComponent } = this.state;
-    const component = [...components];
-    return component.map(comp => {
+    const { components, markedComponent, editorComponents } = this.state;
+    const addedComponents = [...components];
+    return addedComponents.map(comp => {
       if (typeof comp.type === 'undefined') {
         return <div />;
       }
-      const Component = DefaultComponents[comp.type.toLowerCase()].component;
+      const { component, props = {} } = editorComponents[
+        comp.type.toLowerCase()
+      ];
+      const Component = component;
 
       return (
         <Component
+          {...props}
           bordered={markedComponent[comp.position]}
           key={'component' + comp.id}
           edit={comp.edit}
@@ -162,7 +170,7 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { components, setState } = this.state;
+    const { components, setState, editorComponents } = this.state;
     return (
       <div>
         <EditorContext.Provider
@@ -183,7 +191,7 @@ class Editor extends React.Component {
           />
           <EditorComponentContext.Provider
             value={{
-              components: DefaultComponents,
+              components: editorComponents,
               addedComponents: components,
               setState,
             }}
@@ -196,4 +204,8 @@ class Editor extends React.Component {
     );
   }
 }
+
+Editor.propTypes = {
+  editorComponents: PropTypes.objectOf(PropTypes.shape),
+};
 export default Editor;

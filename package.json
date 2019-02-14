@@ -1,7 +1,7 @@
 {
   "name": "react-edit",
   "version": "1.0.0",
-  "description": "editor for tsunaguJapan",
+  "description": "component based editor written in react",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",

@@ -6,7 +6,7 @@ import ComponentAction from './component-actions';
 import Img from '../../helper/Img';
 
 /*
- @todo remove this in the futur
+ @todo remove this in the future
  */
 class Link extends React.Component {
   static propTypes = {

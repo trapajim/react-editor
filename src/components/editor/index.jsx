@@ -139,6 +139,10 @@ class Editor extends React.Component {
   }
 
   setComponents(components) {
+    const { onContentUpdate } = this.props;
+    if (typeof onContentUpdate === 'function') {
+      onContentUpdate(components);
+    }
     this.setState({ components });
     localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
@@ -207,5 +211,6 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   editorComponents: PropTypes.objectOf(PropTypes.shape),
+  onContentUpdate: PropTypes.func,
 };
 export default Editor;

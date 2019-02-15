@@ -7,3 +7,5 @@ Right now following modules are implemented:
 - Headline
 - Text
 - Quote
+
+following boilerplate was used [webpack-react-boilerplate](https://github.com/HashemKhalifa/webpack-react-boilerplate)

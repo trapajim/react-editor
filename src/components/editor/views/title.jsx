@@ -33,21 +33,3 @@ TitleView.propTypes = {
 };
 
 export default TitleView;
-
-/*
-export default class HeadlineView extends React.Component {
-    getHeading(text) {
-      if (this.props.type === "heading") {
-        return (
-          <h2 className={"article-heading"} id={"hl" + this.props.compid}>
-            {text}
-          </h2>
-        );
-      }
-      return <h3 id={"hl" + this.props.compid}>{text}</h3>;
-    }
-    render() {
-      return this.getHeading(this.props.text);
-    }
-  }
-  */

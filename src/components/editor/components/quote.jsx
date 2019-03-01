@@ -27,7 +27,6 @@ class Quote extends React.Component {
   }
 
   handleTextChange(evt, type) {
-    console.log(evt.target);
     const { content, setState } = this.props;
     const text = evt.target.value;
     if (type === 'quote') {

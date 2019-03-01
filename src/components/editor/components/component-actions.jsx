@@ -74,12 +74,11 @@ const ComponentActions = WrappedComponent => {
         classes,
         edit,
         updateEditState,
-        content,
         position,
         children,
         bordered,
       } = this.props;
-      const { showBar } = this.state;
+      const { showBar, content } = this.state;
       const paperClass = {};
       paperClass.padding = classes.padding;
       if (bordered) {

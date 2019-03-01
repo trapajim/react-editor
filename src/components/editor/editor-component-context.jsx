@@ -8,6 +8,7 @@ import Text from './components/text';
 import Link from './components/link';
 import Quote from './components/quote';
 import TitleView from './views/title';
+import TextView from './views/text';
 
 export const DefaultComponents = {
   title: {
@@ -19,7 +20,7 @@ export const DefaultComponents = {
   text: {
     component: Text,
     icon: <TextFieldsIcon fontSize="small" />,
-    view: TitleView,
+    view: TextView,
     title: 'text',
   },
   link: {

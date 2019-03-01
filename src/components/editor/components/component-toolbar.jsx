@@ -87,7 +87,7 @@ class ComponentToolbar extends React.Component {
   }
 
   render() {
-    const { classes, bordered } = this.props;
+    const { classes, bordered, slim } = this.props;
     return (
       <Toolbar>
         <div style={{ flexGrow: 1 }} />
@@ -153,19 +153,27 @@ class ComponentToolbar extends React.Component {
             <Bookmark />
           </IconButton>
         </Tooltip>
-        <Tooltip title="save" TransitionComponent={Zoom}>
-          <IconButton aria-label="save" onClick={this.handleSaveButtonClick}>
-            <SaveIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Cancel" TransitionComponent={Zoom}>
-          <IconButton
-            aria-label="cancel"
-            onClick={this.handleCancelButtonClick}
-          >
-            <CancelIcon />
-          </IconButton>
-        </Tooltip>
+        {!slim ? (
+          <Tooltip title="save" TransitionComponent={Zoom}>
+            <IconButton aria-label="save" onClick={this.handleSaveButtonClick}>
+              <SaveIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          ''
+        )}
+        {!slim ? (
+          <Tooltip title="Cancel" TransitionComponent={Zoom}>
+            <IconButton
+              aria-label="cancel"
+              onClick={this.handleCancelButtonClick}
+            >
+              <CancelIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          ''
+        )}
       </Toolbar>
     );
   }
@@ -176,5 +184,6 @@ ComponentToolbar.propTypes = {
   position: PropTypes.number,
   cancelActionCallBack: PropTypes.func,
   bordered: PropTypes.bool,
+  slim: PropTypes.bool,
 };
 export default withStyles(style)(ComponentToolbar);

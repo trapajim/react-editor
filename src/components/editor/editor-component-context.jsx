@@ -7,26 +7,31 @@ import Title from './components/title';
 import Text from './components/text';
 import Link from './components/link';
 import Quote from './components/quote';
+import TitleView from './views/title';
 
 export const DefaultComponents = {
   title: {
     component: Title,
     icon: <TitleIcon fontSize="small" />,
+    view: TitleView,
     title: 'Title',
   },
   text: {
     component: Text,
     icon: <TextFieldsIcon fontSize="small" />,
+    view: TitleView,
     title: 'text',
   },
   link: {
     component: Link,
     icon: <LinkIcon fontSize="small" />,
+    view: TitleView,
     title: 'Link',
   },
   quote: {
     component: Quote,
     icon: <QuoteIcon fontSize="small" />,
+    view: TitleView,
     title: 'Quote',
   },
 };

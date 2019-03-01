@@ -154,11 +154,11 @@ class Editor extends React.Component {
       if (typeof comp.type === 'undefined') {
         return <div />;
       }
-      const { component, props = {} } = editorComponents[
+      const { component, view, props = {} } = editorComponents[
         comp.type.toLowerCase()
       ];
       const Component = component;
-
+      const View = view;
       return (
         <Component
           {...props}
@@ -168,7 +168,9 @@ class Editor extends React.Component {
           position={comp.position}
           content={Object.assign({}, comp.content)}
           updateEditState={this.updateEditStateOfComponent}
-        />
+        >
+          <View content={Object.assign({}, comp.content)} compid={comp.id} />
+        </Component>
       );
     });
   }

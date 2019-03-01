@@ -9,6 +9,7 @@ import Link from './components/link';
 import Quote from './components/quote';
 import TitleView from './views/title';
 import TextView from './views/text';
+import QuoteView from './views/quote';
 
 export const DefaultComponents = {
   title: {
@@ -32,7 +33,7 @@ export const DefaultComponents = {
   quote: {
     component: Quote,
     icon: <QuoteIcon fontSize="small" />,
-    view: TitleView,
+    view: QuoteView,
     title: 'Quote',
   },
 };

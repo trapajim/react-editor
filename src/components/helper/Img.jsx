@@ -10,7 +10,7 @@ const style = {
 };
 const Img = props => {
   const { classes, ...rest } = props;
-  return <img className={classes.responsive} {...rest} />;
+  return <img className={classes.responsive} {...rest} alt="" />;
 };
 Img.propTypes = {
   classes: PropTypes.objectOf(PropTypes.shape),

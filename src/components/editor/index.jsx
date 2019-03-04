@@ -195,7 +195,7 @@ class Editor extends React.Component {
                 setState,
               }}
             >
-              <EditorActions show={true} afterPos={comp.position} />
+              <EditorActions show afterPos={comp.position} />
             </EditorComponentContext.Provider>
           ) : (
             ''
@@ -234,7 +234,7 @@ class Editor extends React.Component {
               setState,
             }}
           >
-            <EditorActions show={true} />
+            <EditorActions show />
           </EditorComponentContext.Provider>
           {this.renderComponents()}
         </EditorContext.Provider>

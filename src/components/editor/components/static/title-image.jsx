@@ -118,7 +118,7 @@ class TitleImage extends React.Component {
       <EditorContext.Consumer>
         {context => (
           <Dialog
-            fullWidth={true}
+            fullWidth
             maxWidth="md"
             open={shouldShowSearchPopup}
             onClose={this.toggleSearchPopup}

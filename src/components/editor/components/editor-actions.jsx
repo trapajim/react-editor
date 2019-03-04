@@ -75,7 +75,7 @@ class EditorActions extends React.Component {
   renderComponents() {
     const { components, addedComponents } = this.context;
     const { size, classes, afterPos } = this.props;
-    const len = afterPos == -1 ? addedComponents.length : afterPos;
+    const len = afterPos === -1 ? addedComponents.length : afterPos;
     return Object.keys(components).map(key => (
       <Tooltip
         key={components[key].title + key}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import Editor from './components/editor';
+import Editor from '../src/components/editor';
 
 class App extends Component {
   constructor(props) {

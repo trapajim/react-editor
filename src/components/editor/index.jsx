@@ -29,6 +29,7 @@ class Editor extends React.Component {
       markedComponent: {},
       editorComponents,
       components: [],
+      showAddComponentAfterPosition: 0,
     };
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
     this.updateEditStateOfComponent = this.updateEditStateOfComponent.bind(
@@ -37,6 +38,9 @@ class Editor extends React.Component {
     this.deleteComponentAtIndex = this.deleteComponentAtIndex.bind(this);
     this.moveComponent = this.moveComponent.bind(this);
     this.updateMarkedComponents = this.updateMarkedComponents.bind(this);
+    this.updateShowAddComponentAfterPosition = this.updateShowAddComponentAfterPosition.bind(
+      this,
+    );
   }
 
   handleSetState(fn) {
@@ -52,6 +56,10 @@ class Editor extends React.Component {
     }
 
     this.setState({ markedComponent });
+  }
+
+  updateShowAddComponentAfterPosition(pos) {
+    this.setState({ showAddComponentAfterPosition: pos });
   }
 
   onComponentUpdate(content, position) {
@@ -143,12 +151,18 @@ class Editor extends React.Component {
     if (typeof onContentUpdate === 'function') {
       onContentUpdate(components);
     }
-    this.setState({ components });
+    this.setState({ components, showAddComponentAfterPosition: -1 });
     localStorage.setItem(this.localStorageName, JSON.stringify(components));
   }
 
   renderComponents() {
-    const { components, markedComponent, editorComponents } = this.state;
+    const {
+      components,
+      markedComponent,
+      editorComponents,
+      showAddComponentAfterPosition,
+      setState,
+    } = this.state;
     const addedComponents = [...components];
     return addedComponents.map(comp => {
       if (typeof comp.type === 'undefined') {
@@ -167,9 +181,25 @@ class Editor extends React.Component {
           edit={comp.edit}
           position={comp.position}
           content={Object.assign({}, comp.content)}
+          updateShowAddComponentAfterPosition={
+            this.updateShowAddComponentAfterPosition
+          }
           updateEditState={this.updateEditStateOfComponent}
         >
           <View content={Object.assign({}, comp.content)} compid={comp.id} />
+          {showAddComponentAfterPosition === comp.position ? (
+            <EditorComponentContext.Provider
+              value={{
+                components: editorComponents,
+                addedComponents: components,
+                setState,
+              }}
+            >
+              <EditorActions show={true} afterPos={comp.position} />
+            </EditorComponentContext.Provider>
+          ) : (
+            ''
+          )}
         </Component>
       );
     });
@@ -185,6 +215,8 @@ class Editor extends React.Component {
             deleteComponentAtIndex: this.deleteComponentAtIndex,
             moveComponent: this.moveComponent,
             updateMarkedComponents: this.updateMarkedComponents,
+            updateShowAddComponentAfterPosition: this
+              .updateShowAddComponentAfterPosition,
           }}
         >
           <BlogTitle defaultValue="Title" updateCurChar={() => {}} />

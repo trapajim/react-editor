@@ -23,6 +23,7 @@ const ComponentActions = WrappedComponent => {
       edit: PropTypes.bool,
       position: PropTypes.number,
       updateEditState: PropTypes.func,
+      updateShowAddComponentAfterPosition: PropTypes.func,
       content: PropTypes.objectOf(PropTypes.shape),
       classes: PropTypes.objectOf(PropTypes.shape),
       bordered: PropTypes.bool,
@@ -53,6 +54,8 @@ const ComponentActions = WrappedComponent => {
       if (evt.type === 'keydown' && evt.keyCode !== 13) {
         return;
       }
+      console.log(evt.target);
+      console.log(evt.currentTarget);
       this.toggleEdit();
     }
 
@@ -61,7 +64,9 @@ const ComponentActions = WrappedComponent => {
     }
 
     handleMouseLeave() {
+      const { updateShowAddComponentAfterPosition } = this.props;
       this.setState({ showBar: false });
+      updateShowAddComponentAfterPosition(-1);
     }
 
     onHandleSetState(fn) {

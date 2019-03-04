@@ -24,6 +24,7 @@ class EditorActions extends React.Component {
   static propTypes = {
     show: PropTypes.bool,
     size: PropTypes.string,
+    afterPos: PropTypes.number,
     classes: PropTypes.objectOf(PropTypes.shape),
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
@@ -31,7 +32,7 @@ class EditorActions extends React.Component {
     ]),
   };
 
-  static defaultProps = { show: false, size: 'small' };
+  static defaultProps = { show: false, size: 'small', afterPos: -1 };
 
   static generateId(pre) {
     return `${pre}_${new Date().getTime()}`;
@@ -53,7 +54,8 @@ class EditorActions extends React.Component {
     this.setState({ showMenu: !showMenu });
   }
 
-  addComponents(type, position) {
+  addComponents(type, position, evt) {
+    evt.stopPropagation();
     const { addedComponents, setState } = this.context;
     const currentState = [...addedComponents];
     currentState.splice(position + 1, 0, {
@@ -72,15 +74,15 @@ class EditorActions extends React.Component {
 
   renderComponents() {
     const { components, addedComponents } = this.context;
-    const { size, classes } = this.props;
-
+    const { size, classes, afterPos } = this.props;
+    const len = afterPos == -1 ? addedComponents.length : afterPos;
     return Object.keys(components).map(key => (
       <Tooltip
         key={components[key].title + key}
         title={components[key].title}
         TransitionComponent={Zoom}
-        onClick={() => {
-          this.addComponents(key, addedComponents.length);
+        onClick={evt => {
+          this.addComponents(key, len, evt);
         }}
       >
         <IconButton

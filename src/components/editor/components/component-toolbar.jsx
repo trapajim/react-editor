@@ -13,8 +13,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Zoom from '@material-ui/core/Zoom';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Add from '@material-ui/icons/ControlPointOutlined';
 import { withStyles } from '@material-ui/core/styles';
-
 import { EditorContext } from '../editor-context';
 
 const style = {
@@ -31,6 +31,7 @@ class ComponentToolbar extends React.Component {
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
     this.handleMoveButtonClicked = this.handleMoveButtonClicked.bind(this);
     this.handleBookmarkButtonClick = this.handleBookmarkButtonClick.bind(this);
+    this.handleAddClicked = this.handleAddClicked.bind(this);
   }
 
   handleSaveButtonClick() {
@@ -64,6 +65,12 @@ class ComponentToolbar extends React.Component {
     updateMarkedComponents(position);
   }
 
+  handleAddClicked() {
+    const { updateShowAddComponentAfterPosition } = this.context;
+    const { position } = this.props;
+    updateShowAddComponentAfterPosition(position);
+  }
+
   getNewPositionOfElement(direction) {
     const { position } = this.props;
     let newPosition = 0;
@@ -89,92 +96,104 @@ class ComponentToolbar extends React.Component {
   render() {
     const { classes, bordered, slim } = this.props;
     return (
-      <Toolbar>
-        <div style={{ flexGrow: 1 }} />
-        <Tooltip title="move 1 up" TransitionComponent={Zoom}>
-          <IconButton
-            className={classNames({ [classes.color]: bordered })}
-            aria-label="move 1 up"
-            data-move="up"
-            onClick={this.handleMoveButtonClicked}
-          >
-            <ArrowUp />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="move 1 down" TransitionComponent={Zoom}>
-          <IconButton
-            className={classNames({ [classes.color]: bordered })}
-            aria-label="move 1 down"
-            data-move="down"
-            onClick={this.handleMoveButtonClicked}
-          >
-            <ArrowDown />
-          </IconButton>
-        </Tooltip>
-        {bordered ? (
-          <div />
-        ) : (
-          <div>
-            <Tooltip title="move to the top" TransitionComponent={Zoom}>
-              <IconButton
-                aria-label="move to the top"
-                data-move="first"
-                onClick={this.handleMoveButtonClicked}
-              >
-                <VertTop />
-              </IconButton>
+      <div>
+        <Toolbar>
+          {slim ? (
+            <Tooltip title="add component" TransitionComponent={Zoom}>
+              <Add onClick={this.handleAddClicked} />
             </Tooltip>
-            <Tooltip title="move to bottom" TransitionComponent={Zoom}>
-              <IconButton
-                aria-label="move to top"
-                data-move="last"
-                onClick={this.handleMoveButtonClicked}
-              >
-                <VertBottom />
-              </IconButton>
-            </Tooltip>
-          </div>
-        )}
-        <Tooltip title="delete" TransitionComponent={Zoom}>
-          <IconButton
-            className={classNames({ [classes.color]: bordered })}
-            aria-label="delete"
-            onClick={this.handleDeleteButtonClick}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="mark" TransitionComponent={Zoom}>
-          <IconButton
-            className={classNames({ [classes.color]: bordered })}
-            aria-label="mark"
-            onClick={this.handleBookmarkButtonClick}
-          >
-            <Bookmark />
-          </IconButton>
-        </Tooltip>
-        {!slim ? (
-          <Tooltip title="save" TransitionComponent={Zoom}>
-            <IconButton aria-label="save" onClick={this.handleSaveButtonClick}>
-              <SaveIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          ''
-        )}
-        {!slim ? (
-          <Tooltip title="Cancel" TransitionComponent={Zoom}>
+          ) : (
+            ''
+          )}
+          <div style={{ flexGrow: 1 }} />
+          <Tooltip title="move 1 up" TransitionComponent={Zoom}>
             <IconButton
-              aria-label="cancel"
-              onClick={this.handleCancelButtonClick}
+              className={classNames({ [classes.color]: bordered })}
+              aria-label="move 1 up"
+              data-move="up"
+              onClick={this.handleMoveButtonClicked}
             >
-              <CancelIcon />
+              <ArrowUp />
             </IconButton>
           </Tooltip>
-        ) : (
-          ''
-        )}
-      </Toolbar>
+          <Tooltip title="move 1 down" TransitionComponent={Zoom}>
+            <IconButton
+              className={classNames({ [classes.color]: bordered })}
+              aria-label="move 1 down"
+              data-move="down"
+              onClick={this.handleMoveButtonClicked}
+            >
+              <ArrowDown />
+            </IconButton>
+          </Tooltip>
+          {bordered ? (
+            <div />
+          ) : (
+            <div>
+              <Tooltip title="move to the top" TransitionComponent={Zoom}>
+                <IconButton
+                  aria-label="move to the top"
+                  data-move="first"
+                  onClick={this.handleMoveButtonClicked}
+                >
+                  <VertTop />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="move to bottom" TransitionComponent={Zoom}>
+                <IconButton
+                  aria-label="move to top"
+                  data-move="last"
+                  onClick={this.handleMoveButtonClicked}
+                >
+                  <VertBottom />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
+          <Tooltip title="delete" TransitionComponent={Zoom}>
+            <IconButton
+              className={classNames({ [classes.color]: bordered })}
+              aria-label="delete"
+              onClick={this.handleDeleteButtonClick}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="mark" TransitionComponent={Zoom}>
+            <IconButton
+              className={classNames({ [classes.color]: bordered })}
+              aria-label="mark"
+              onClick={this.handleBookmarkButtonClick}
+            >
+              <Bookmark />
+            </IconButton>
+          </Tooltip>
+          {!slim ? (
+            <Tooltip title="save" TransitionComponent={Zoom}>
+              <IconButton
+                aria-label="save"
+                onClick={this.handleSaveButtonClick}
+              >
+                <SaveIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
+          {!slim ? (
+            <Tooltip title="Cancel" TransitionComponent={Zoom}>
+              <IconButton
+                aria-label="cancel"
+                onClick={this.handleCancelButtonClick}
+              >
+                <CancelIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            ''
+          )}
+        </Toolbar>
+      </div>
     );
   }
 }

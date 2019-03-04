@@ -54,8 +54,6 @@ const ComponentActions = WrappedComponent => {
       if (evt.type === 'keydown' && evt.keyCode !== 13) {
         return;
       }
-      console.log(evt.target);
-      console.log(evt.currentTarget);
       this.toggleEdit();
     }
 
@@ -115,7 +113,9 @@ const ComponentActions = WrappedComponent => {
         </Paper>
       ) : (
         <div
-          className={classNames(classes.pointer)}
+          className={classNames(classes.pointer, {
+            [classes.border]: bordered,
+          })}
           onMouseOver={this.handleMouseOver}
           onFocus={this.handleMouseOver}
           onMouseLeave={this.handleMouseLeave}

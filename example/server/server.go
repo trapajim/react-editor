@@ -8,19 +8,21 @@ import (
 )
 
 type Message struct {
-	id          string                 `json:"id"`
-	content     map[string]interface{} `json:"message"`
-	edit        bool                   `json:"edit"`
-	position    int                    `json:"position"`
-	contentType string                 `json:"type"`
+	Id          string                 `json:"id"`
+	Content     map[string]interface{} `json:"content"`
+	Edit        string                 `json:"edit"`
+	Position    int                    `json:"position"`
+	ContentType string                 `json:"type"`
 }
 
 var clients = make(map[*websocket.Conn]bool)
-var messages = make(chan Message)
+var messages = make(chan []Message)
 var upgrader = websocket.Upgrader{}
 
 func main() {
+
 	clientFs := http.FileServer(http.Dir("../build"))
+
 	http.Handle("/", clientFs)
 	http.HandleFunc("/ws", handleConnections)
 	go handleMessages()
@@ -40,8 +42,11 @@ func handleConnections(responseWriter http.ResponseWriter, request *http.Request
 	clients[conn] = true
 
 	for {
-		var msg Message
+
+		var msg []Message
+		log.Printf("body: %v", request)
 		err := conn.ReadJSON(&msg)
+		log.Printf("error: %v", msg)
 		if err != nil {
 			log.Printf("error: %v", err)
 			delete(clients, conn)

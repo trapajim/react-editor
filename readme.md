@@ -8,4 +8,6 @@ Right now following modules are implemented:
 - Text
 - Quote
 
+For a full example with server client implementation checkout the [example](https://github.com/HashemKhalifa/webpack-react-boilerplate) folder
+
 following boilerplate was used [webpack-react-boilerplate](https://github.com/HashemKhalifa/webpack-react-boilerplate)

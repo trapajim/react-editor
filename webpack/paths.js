@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   root: path.resolve(__dirname, '../'),
-  outputPath: path.resolve(__dirname, '../', 'build'),
+  outputPath: path.resolve(__dirname, '../', 'example/build'),
   entryPath: path.resolve(__dirname, '../', 'example/index.jsx'),
   templatePath: path.resolve(__dirname, '../', 'example/template.html'),
   imagesFolder: 'images',

@@ -24,6 +24,7 @@ package-lock.json
 /build/index.html
 /build*
 /build/*
+/example/build/*
 # Editor/IDE
 .idea
 packages/api/etc/

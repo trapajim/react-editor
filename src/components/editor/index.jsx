@@ -24,11 +24,13 @@ class Editor extends React.Component {
     super(props);
 
     const editorComponents = props.editorComponents || DefaultComponents;
+    const { components, updateFromParent } = props;
     this.state = {
       setState: this.handleSetState.bind(this),
       markedComponent: {},
       editorComponents,
-      components: [],
+      components,
+      updateFromParent,
       showAddComponentAfterPosition: 0,
     };
     this.onComponentUpdate = this.onComponentUpdate.bind(this);
@@ -41,6 +43,16 @@ class Editor extends React.Component {
     this.updateShowAddComponentAfterPosition = this.updateShowAddComponentAfterPosition.bind(
       this,
     );
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.updateFromParent > state.updateFromParent) {
+      return {
+        components: nextProps.components,
+        updateFromParent: nextProps.updateFromParent,
+      };
+    }
+    return null;
   }
 
   handleSetState(fn) {
@@ -65,7 +77,10 @@ class Editor extends React.Component {
   onComponentUpdate(content, position) {
     const { components } = this.state;
     components[position].content = content;
-    components[position].edit = false;
+    components[position].edit = '';
+    components[position].id = EditorActions.generateId(
+      components[position].type,
+    );
     this.setComponents(components);
   }
 
@@ -142,7 +157,9 @@ class Editor extends React.Component {
 
   updateEditStateOfComponent(position) {
     const { components } = this.state;
-    components[position].edit = !components[position].edit;
+    const { userId } = this.props;
+    components[position].edit =
+      components[position].edit === userId ? '' : userId;
     this.setComponents(components);
   }
 
@@ -163,6 +180,7 @@ class Editor extends React.Component {
       showAddComponentAfterPosition,
       setState,
     } = this.state;
+    const { userId } = this.props;
     const addedComponents = [...components];
     return addedComponents.map(comp => {
       if (typeof comp.type === 'undefined') {
@@ -179,6 +197,7 @@ class Editor extends React.Component {
           bordered={markedComponent[comp.position]}
           key={'component' + comp.id}
           edit={comp.edit}
+          userId={userId}
           position={comp.position}
           content={Object.assign({}, comp.content)}
           updateShowAddComponentAfterPosition={
@@ -193,6 +212,7 @@ class Editor extends React.Component {
                 components: editorComponents,
                 addedComponents: components,
                 setState,
+                userId,
               }}
             >
               <EditorActions show afterPos={comp.position} />
@@ -207,6 +227,7 @@ class Editor extends React.Component {
 
   render() {
     const { components, setState, editorComponents } = this.state;
+    const { userId } = this.props;
     return (
       <div>
         <EditorContext.Provider
@@ -232,6 +253,7 @@ class Editor extends React.Component {
               components: editorComponents,
               addedComponents: components,
               setState,
+              userId,
             }}
           >
             <EditorActions show />
@@ -245,6 +267,12 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   editorComponents: PropTypes.objectOf(PropTypes.shape),
+  components: PropTypes.arrayOf(PropTypes.shape),
   onContentUpdate: PropTypes.func,
+  userId: PropTypes.func,
+  updateFromParent: PropTypes.number,
+};
+Editor.defaultProps = {
+  userId: 1,
 };
 export default Editor;

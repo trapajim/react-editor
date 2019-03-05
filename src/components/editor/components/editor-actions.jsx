@@ -56,14 +56,14 @@ class EditorActions extends React.Component {
 
   addComponents(type, position, evt) {
     evt.stopPropagation();
-    const { addedComponents, setState } = this.context;
+    const { addedComponents, setState, userId } = this.context;
     const currentState = [...addedComponents];
     currentState.splice(position + 1, 0, {
       type,
       position,
       id: EditorActions.generateId(type),
       content: {},
-      edit: true,
+      edit: userId,
     });
 
     for (let i = 0; i < currentState.length; i += 1) {
@@ -99,12 +99,13 @@ class EditorActions extends React.Component {
   render() {
     const { classes, children, show } = this.props;
     const { showMenu } = this.state;
-    const events = !show
-      ? {
-          onMouseEnter: this.handleToggleShowMenu,
-          onMouseLeave: this.handleToggleShowMenu,
-        }
-      : {};
+    let events = {};
+    if (!show) {
+      events = {
+        onMouseEnter: this.handleToggleShowMenu,
+        onMouseLeave: this.handleToggleShowMenu,
+      };
+    }
     return (
       <div {...events}>
         {children}

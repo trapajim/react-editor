@@ -203,6 +203,7 @@ ComponentToolbar.propTypes = {
   position: PropTypes.number,
   cancelActionCallBack: PropTypes.func,
   bordered: PropTypes.bool,
+  classes: PropTypes.objectOf(PropTypes.shape),
   slim: PropTypes.bool,
 };
 export default withStyles(style)(ComponentToolbar);

@@ -15,6 +15,11 @@ const style = {
   pointer: {
     cursor: 'pointer',
   },
+  disabled: {
+    color: 'rgba(0, 0, 0, 0.26)',
+    boxShadow: 'none',
+    backgroundColor: 'rgba(0, 0, 0, 0.12)',
+  },
 };
 
 const ComponentActions = WrappedComponent => {
@@ -22,6 +27,7 @@ const ComponentActions = WrappedComponent => {
     static propTypes = {
       edit: PropTypes.bool,
       position: PropTypes.number,
+      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
       updateEditState: PropTypes.func,
       updateShowAddComponentAfterPosition: PropTypes.func,
       content: PropTypes.objectOf(PropTypes.shape),
@@ -51,6 +57,10 @@ const ComponentActions = WrappedComponent => {
     }
 
     handleSwitchEditMode(evt) {
+      const { edit } = this.props;
+      if (edit !== '') {
+        return;
+      }
       if (evt.type === 'keydown' && evt.keyCode !== 13) {
         return;
       }
@@ -80,6 +90,7 @@ const ComponentActions = WrappedComponent => {
         position,
         children,
         bordered,
+        userId,
       } = this.props;
       const { showBar, content } = this.state;
       const paperClass = {};
@@ -87,8 +98,12 @@ const ComponentActions = WrappedComponent => {
       if (bordered) {
         paperClass.border = classes.border;
       }
+      let editing = false;
+      if (edit !== '' && edit !== userId) {
+        editing = true;
+      }
 
-      return edit ? (
+      return edit === userId ? (
         <Paper
           elevation={10}
           className={classNames(classes.padding, {
@@ -115,6 +130,7 @@ const ComponentActions = WrappedComponent => {
         <div
           className={classNames(classes.pointer, {
             [classes.border]: bordered,
+            [classes.disabled]: editing,
           })}
           onMouseOver={this.handleMouseOver}
           onFocus={this.handleMouseOver}
@@ -122,6 +138,7 @@ const ComponentActions = WrappedComponent => {
           role="button"
           tabIndex={position}
         >
+          {editing ? <small>{userId} is editing</small> : ''}
           <div
             onClick={this.handleSwitchEditMode}
             onKeyDown={this.handleSwitchEditMode}

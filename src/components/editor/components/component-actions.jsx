@@ -56,9 +56,13 @@ const ComponentActions = WrappedComponent => {
       updateEditState(position);
     }
 
-    handleSwitchEditMode(evt) {
+    isAllowedToEdit() {
       const { edit } = this.props;
-      if (edit !== '') {
+      return edit === '';
+    }
+
+    handleSwitchEditMode(evt) {
+      if (!this.isAllowedToEdit()) {
         return;
       }
       if (evt.type === 'keydown' && evt.keyCode !== 13) {
@@ -68,6 +72,9 @@ const ComponentActions = WrappedComponent => {
     }
 
     handleMouseOver() {
+      if (!this.isAllowedToEdit()) {
+        return;
+      }
       this.setState({ showBar: true });
     }
 

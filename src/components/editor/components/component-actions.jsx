@@ -25,9 +25,9 @@ const style = {
 const ComponentActions = WrappedComponent => {
   class HOC extends React.Component {
     static propTypes = {
-      edit: PropTypes.bool,
+      edit: PropTypes.string,
       position: PropTypes.number,
-      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       updateEditState: PropTypes.func,
       updateShowAddComponentAfterPosition: PropTypes.func,
       content: PropTypes.objectOf(PropTypes.shape),
@@ -89,7 +89,6 @@ const ComponentActions = WrappedComponent => {
     }
 
     render() {
-      // @todo figure out why I have to use Object assign
       const {
         classes,
         edit,

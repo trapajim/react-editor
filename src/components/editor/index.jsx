@@ -269,7 +269,7 @@ Editor.propTypes = {
   editorComponents: PropTypes.objectOf(PropTypes.shape),
   components: PropTypes.arrayOf(PropTypes.shape),
   onContentUpdate: PropTypes.func,
-  userId: PropTypes.func,
+  userId: PropTypes.string,
   updateFromParent: PropTypes.number,
 };
 Editor.defaultProps = {

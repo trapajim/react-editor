@@ -11,7 +11,11 @@ export const parseUrl = url => {
   }
   const vimeoRegex = /(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
   const parsed = url.match(vimeoRegex);
-  return '//player.vimeo.com/video/' + parsed[1];
+  if (parsed) {
+    return '//player.vimeo.com/video/' + parsed[1];
+  }
+
+  return url;
 };
 
 class Video extends React.Component {

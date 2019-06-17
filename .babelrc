@@ -1,11 +1,14 @@
 {
   "presets": [
-    ["@babel/preset-env",{
-      "targets": {
-        "esmodules": true
-      },
-      "useBuiltIns" : "usage"
-    }],
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": true
+        },
+        "useBuiltIns": "entry"
+      }
+    ],
     "@babel/preset-react"
   ],
   "plugins": [

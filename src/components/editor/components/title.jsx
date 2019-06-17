@@ -53,6 +53,7 @@ class Title extends React.Component {
     const { content } = this.props;
     const { textLength } = this.state;
     const { headingType = 'heading', text = '' } = content;
+
     return (
       <div>
         <FormControl>

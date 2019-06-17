@@ -4,7 +4,7 @@ import Quote from '../src/components/editor/components/quote';
 import ComponentToolbar from '../src/components/editor/components/component-toolbar';
 
 describe('<Quote edit/>', () => {
-  const parent = shallow(<Quote edit />);
+  const parent = shallow(<Quote edit="ff" userId="ff" />);
   const component = parent
     .dive()
     .find('Quote')

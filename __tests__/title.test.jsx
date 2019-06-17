@@ -5,7 +5,7 @@ import Title from '../src/components/editor/components/title';
 import ComponentToolbar from '../src/components/editor/components/component-toolbar';
 
 describe('<Title edit/>', () => {
-  const parent = shallow(<Title edit />);
+  const parent = shallow(<Title edit="ff" userId="ff" />);
   const component = parent
     .dive()
     .find('Title')

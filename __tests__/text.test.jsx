@@ -5,7 +5,7 @@ import Text from '../src/components/editor/components/text';
 import ComponentToolbar from '../src/components/editor/components/component-toolbar';
 
 describe('<Text edit/>', () => {
-  const parent = shallow(<Text edit />);
+  const parent = shallow(<Text edit="ff" userId="ff" />);
   const component = parent
     .dive()
     .find('Text')

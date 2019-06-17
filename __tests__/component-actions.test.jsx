@@ -1,6 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-//import { createShallow } from '@material-ui/core/test-utils';
+import { mount } from 'enzyme';
 
 import ComponentActions from '../src/components/editor/components/component-actions';
 
@@ -13,7 +12,7 @@ describe('ComponentActions render with edit false', () => {
   // const shallow = createShallow();
 
   const Component = ComponentActions(mock);
-  const wrapper = mount(<Component edit={false} />);
+  const wrapper = mount(<Component edit="" userId="ff" />);
 
   it('it should render 2 divs with button role', () => {
     expect(wrapper.find('[role="button"]')).toHaveLength(2);
@@ -31,7 +30,7 @@ describe('ComponentActions render with edit true', () => {
   // const shallow = createShallow();
 
   const Component = ComponentActions(mock);
-  const wrapper = mount(<Component edit={true} />);
+  const wrapper = mount(<Component edit="ff" userId="ff" />);
 
   it('it should render Paper', () => {
     expect(wrapper.find('Paper')).toHaveLength(1);

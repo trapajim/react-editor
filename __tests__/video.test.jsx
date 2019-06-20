@@ -34,11 +34,7 @@ describe('parseUrl', () => {
     expect(result).toBe(embedUrl.yt);
   });
   it('should return an vimeo embed url', () => {
-    const result = parseUrl(testUrl.vimoe);
-    expect(result).toBe(embedUrl.vimoe);
-  });
-  it('should return an instagram embed code', () => {
-    const result = parseUrl(testUrl.yt);
-    expect(result).toBe(embedUrl.yt);
+    const result = parseUrl(testUrl.vimeo);
+    expect(result).toBe(embedUrl.vimeo);
   });
 });

@@ -26,11 +26,12 @@ class Video extends React.Component {
 
   static defaultProps = {
     content: {
-      text: '',
+      video: '',
     },
   };
 
   handleTextChange(evt) {
+    console.log('hello');
     const { content, setState } = this.props;
     const text = evt.target.value;
     content.video = parseUrl(text);
